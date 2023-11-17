@@ -18,4 +18,9 @@ class Modulo extends Model
         'especialidad_id',
         'curso_id',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

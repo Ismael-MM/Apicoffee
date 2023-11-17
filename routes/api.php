@@ -21,7 +21,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::resource('modulos', ModuloController::class);
+    Route::apiResource('modulos', ModuloController::class);
     Route::post('/logout', [LoginRegisterController::class, 'logout']);
 });
 
