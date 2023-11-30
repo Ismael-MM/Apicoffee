@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Models\Modulo;
 use Illuminate\Http\Request;
+use App\Http\Requests\ModuloForm;
 
 class ModuloController extends Controller
 {
@@ -26,17 +27,9 @@ class ModuloController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ModuloForm $request)
     {
         // Primero, valida los datos proporcionados en la solicitud.
-        $request->validate([
-            'codigo' => 'required|string|max:255',
-            'materia' => 'required|string|max:255',
-            'h_semanales' => 'required|integer',
-            'h_totales' => 'required|integer',
-            'especialidad_id' => 'required|integer',
-            'curso_id' => 'required|integer',
-        ]);
 
         // Luego, crea un nuevo registro de módulo en la base de datos.
         $modulo = Modulo::create([
@@ -73,17 +66,9 @@ class ModuloController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Modulo $modulo)
+    public function update(ModuloForm $request, Modulo $modulo)
     {
         // Valida los datos del formulario enviado por la aplicación cliente.
-        $request->validate([
-            'codigo' => 'required|string|max:255',
-            'materia' => 'required|string|max:255',
-            'h_semanales' => 'required|integer',
-            'h_totales' => 'required|integer',
-            'especialidad_id' => 'required|integer',
-            'curso_id' => 'required|integer',
-        ]);
 
         // Actualiza el registro de módulo en la base de datos.
         $modulo->update([
