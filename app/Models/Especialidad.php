@@ -12,4 +12,9 @@ class Especialidad extends Model
     protected $fillable = [
         'nombre',
     ];
+
+    public function modulos()
+    {
+        return $this->hasMany(Modulo::class);
+    }
 }

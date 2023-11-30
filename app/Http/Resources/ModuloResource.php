@@ -14,7 +14,7 @@ class ModuloResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return [
+        $data = [
         'id' => $this->id,
         'codigo' => $this->codigo,
         'materia' => $this->materia,
@@ -26,5 +26,14 @@ class ModuloResource extends JsonResource
         // 'created_at' => $this->created_at,
         // 'updated_at' => $this->updated_at,
         ];
+
+        if ($this->especialidad) {
+            $data['especialidad'] = [
+                'id' => $this->especialidad->id,
+                'nombre' => $this->especialidad->nombre,
+            ];
+        }
+
+        return $data;
     }
 }

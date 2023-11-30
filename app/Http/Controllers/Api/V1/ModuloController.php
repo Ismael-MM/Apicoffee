@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Modulo;
 use Illuminate\Http\Request;
 use App\Http\Requests\ModuloForm;
+use App\Http\Resources\ModuloResource;
 
 class ModuloController extends Controller
 {
@@ -32,22 +33,10 @@ class ModuloController extends Controller
         // Primero, valida los datos proporcionados en la solicitud.
 
         // Luego, crea un nuevo registro de módulo en la base de datos.
-        $modulo = Modulo::create([
-            'codigo' => $request->codigo,
-            'materia' => $request->materia,
-            'h_semanales' => $request->h_semanales,
-            'h_totales' => $request->h_totales,
-            'user_id' => auth()->user()->id,
-            'especialidad_id' => $request->especialidad_id,
-            'curso_id' => $request->curso_id,
-        ]);
+        $modulo = Modulo::create([$request->all());
 
         // Finalmente, devuelve una respuesta JSON con el nuevo registro de módulo y un mensaje de éxito.
-        return response()->json([
-            'success' => true,
-            'message' => 'Módulo creado con éxito.',
-            'data' => $modulo,
-        ]);
+        return new ModuloResource ($modulo);
     }
 
     /**
