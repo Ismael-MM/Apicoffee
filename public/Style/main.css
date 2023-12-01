@@ -1,0 +1,274 @@
+body {
+    background-color: #31393c;
+
+    overflow: hidden;
+
+}
+
+#mainCoantiner {
+    background-color: #31393c;
+    height: 100%;
+    width: 100%;
+}
+
+/***********pricing table**********/
+.title-h1 {
+    margin-top: 0.5em;
+    margin-bottom: 10px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    line-height: inherit;
+    color: #ffffff;
+    font-size: 38px;
+}
+
+.title-h1 .light {
+    font-weight: normal;
+}
+
+.pricing-price-wrapper {
+    background-color: rgba(71, 71, 72, 0.2);
+    border-top-right-radius: 50%;
+    border-top-left-radius: 50%;
+    text-align: center;
+    box-shadow: 20px 20px 60px rgba(0, 0, 0, 0.13), -20px -20px 60px rgba(29, 29, 29, 0.08);
+}
+
+.pricing-price {
+    background-color: #393b4a;
+    background-color: #937666;
+    color: #fff;
+    border-radius: 50%;
+    height: 150px;
+    width: 150px;
+    display: inline-block;
+    padding-top: 35px;
+}
+
+.pricing-cost {
+    font-size: 50px;
+    font-weight: 300;
+    line-height: 1;
+}
+
+.pricing-table-style-4 .time {
+    font-size: 24px;
+    font-weight: 300;
+}
+
+.pricing-row-title {
+    background-color: #303241;
+    padding: 10px 10px;
+    text-align: center;
+}
+
+.pricing_row_title {
+    line-height: 38px;
+    font-size: 24px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.pricing-table.pricing-table-style-4 .pricing-row {
+    background-color: #393b4a;
+    color: #ccc;
+}
+
+.pricing-table-style-4 figure.pricing-row:first-of-type {
+    padding-top: 15px;
+}
+
+.pricing-table-style-4 .pricing-row {
+    padding: 5px 10px;
+}
+
+.pricing-row:before {
+    vertical-align: middle;
+    content: "\f058";
+    font-family: "Font Awesome 5 Free";
+    color: #00bfa5;
+    text-align: center;
+    padding-right: 10px;
+}
+
+body {
+    color: #5f727f;
+}
+
+.pricing-column {
+    float: none;
+    display: inline-block;
+    text-align: left;
+    vertical-align: top;
+    margin-bottom: 42px;
+    -webkit-transition: all 0.3s ease-in-out 0s;
+    -moz-transition: all 0.3s ease-in-out 0s;
+    -ms-transition: all 0.3s ease-in-out 0s;
+    -o-transition: all 0.3s ease-in-out 0s;
+    transition: all 0.3s ease-in-out 0s;
+}
+
+.pricing-column-wrapper {
+    min-width: 230px;
+    text-align: center;
+}
+
+.pricing-row-title {
+    background-color: rgba(48, 50, 65, 0.2);
+}
+
+.margin-body {
+    position: relative;
+    width: 90%;
+    box-sizing: border-box;
+    margin: auto;
+}
+
+.pricing-row {
+    border-top: 1px solid #7273723b;
+}
+
+
+.pricing-price-wrapper {
+    border-top-right-radius: 50%;
+    border-top-left-radius: 50%;
+    padding-top: 10px;
+}
+
+.pricing-column-wrapper+.pricing-column-wrapper .pricing-price {
+    background-color: #937666;
+
+}
+
+.strike {
+    text-decoration: line-through;
+    color: #937666;
+}
+
+.pricing_row_title {
+    color: #937666;
+}
+
+.gem-button {
+    cursor: pointer;
+    border-width: 2px;
+    line-height: 36px;
+    border-style: solid;
+    background: transparent;
+    height: 40px;
+    line-height: 40px;
+    padding: 0 17px;
+    font-size: 14px;
+    margin: 17px;
+    position: relative;
+    display: inline-block;
+    text-align: center;
+    text-transform: uppercase;
+    white-space: nowrap;
+    vertical-align: middle;
+
+}
+
+.gem-green {
+    border-radius: 0px;
+    border-color: #2da7dc;
+    color: #2da7dc !important;
+}
+
+.gem-green:hover {
+    background-color: #2da7dc;
+    color: rgb(255, 255, 255) !important;
+}
+
+.gem-purpel {
+    border-radius: 0px;
+    border-color: #2da7dc;
+    color: #2da7dc !important;
+}
+
+.gem-purpel:hover {
+    background-color: #2da7dc;
+    color: rgb(255, 255, 255) !important;
+}
+
+
+.gem-orange {
+    border-radius: 0px;
+    border-color: #2da7dc;
+    color: #2da7dc !important;
+}
+
+.gem-orange:hover {
+    background-color: #2da7dc;
+    color: rgb(255, 255, 255) !important;
+}
+
+.gem-yellow {
+    border-radius: 0px;
+    border-color: #2da7dc;
+    color: #2da7dc !important;
+}
+
+.gem-yellow:hover {
+    background-color: #2da7dc;
+    color: rgb(255, 255, 255) !important;
+}
+
+.gem-button-position-center {
+    text-align: center;
+    display: block;
+    background-color: rgba(0, 0, 0, 0.16862745098039217);
+    border-radius: 0px 0px 10px 10px;
+}
+
+select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+select:hover {
+    border-color: #ccc;
+}
+
+select:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+select:after {
+    content: '\25BC';
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+select:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+select option {
+    padding: 8px;
+    font-size: 16px;
+}
+
+select,
+select:hover,
+select:focus {
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.btn-50x50 {
+    width: 50px;
+    height: 50px;
+}
