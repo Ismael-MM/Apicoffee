@@ -19,10 +19,7 @@ class ModuloController extends Controller
         $modulos = Modulo::all();
 
         // Devuelve una respuesta JSON con los registros de módulo y un mensaje de éxito.
-        return response()->json([
-            'modulos' => $modulos,
-            'message' => 'Registros de módulo obtenidos con éxito.'
-        ]);
+        return ModuloResource::collection($modulos);
     }
 
     /**
@@ -33,7 +30,7 @@ class ModuloController extends Controller
         // Primero, valida los datos proporcionados en la solicitud.
 
         // Luego, crea un nuevo registro de módulo en la base de datos.
-        $modulo = Modulo::create([$request->all());
+        $modulo = Modulo::create($request->all());
 
         // Finalmente, devuelve una respuesta JSON con el nuevo registro de módulo y un mensaje de éxito.
         return new ModuloResource ($modulo);
@@ -45,11 +42,7 @@ class ModuloController extends Controller
     public function show(Modulo $modulo)
     {
         // Devuelve una respuesta JSON con el registro de módulo.
-        return response()->json([
-            'success' => true,
-            'message' => 'Registro de módulo obtenido correctamente.',
-            'data' => $modulo,
-        ]);
+        return new ModuloResource ($modulo);
     }
 
     /**
@@ -71,10 +64,7 @@ class ModuloController extends Controller
         ]);
 
         // Devuelve una respuesta JSON con el registro de módulo actualizado y un mensaje de éxito.
-        return response()->json([
-            'modulo' => $modulo,
-            'message' => 'Registro de módulo actualizado con éxito.'
-        ]);
+        return new ModuloResource ($modulo);
     }
 
     /**
@@ -86,8 +76,6 @@ class ModuloController extends Controller
         $modulo->delete();
 
         // Devuelve una respuesta JSON con un mensaje de éxito.
-        return response()->json([
-            'message' => 'Registro de módulo eliminado con éxito.'
-        ]);
+        return new ModuloResource ($modulo);
     }
 }
