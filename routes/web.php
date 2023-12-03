@@ -14,13 +14,13 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    $pathToFile = public_path('index.html');
+    return response()->file($pathToFile);
+})->name('login');
 
 
-Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/html/main', function (){
-        $pathToFile = public_path('html/main.html');
-        return response()->file($pathToFile);
-    });
+// Cambia el get('/html/main') por el nombre que quieras, ejemplo: 'get('/formulario')'
+Route::get('/html/main', function () {
+    $pathToFile = public_path('html/main.html');
+    return response()->file($pathToFile);
 });
