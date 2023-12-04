@@ -24,3 +24,7 @@ Route::get('/html/main', function () {
     $pathToFile = public_path('html/main.html');
     return response()->file($pathToFile);
 });
+Route::get('/jefatura', function () {
+    $pathToFile = public_path('html/jefatura.html');
+    return response()->file($pathToFile);
+});
