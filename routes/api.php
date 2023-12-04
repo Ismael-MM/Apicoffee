@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\ModuloController;
 use App\Http\Controllers\Auth\LoginRegisterController;
 use App\Http\Controllers\Api\V1\EspecialidadController;
+use App\Http\Controllers\Api\v1\CursoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,10 +25,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('v1')->group(function () {
         Route::apiResource('modulos', ModuloController::class)->missing(function (Request $request) {
-            return response()->json(['error' => "texto"],404);
+            return response()->json(['error' => "esa ruta no existe"],404);
         });
         Route::apiResource('especialidades', EspecialidadController::class)->missing(function (Request $request) {
-            abort(404);
+            return response()->json(['error' => "esa ruta no existe"],404);
+        });
+        Route::apiResource('cursos', CursoController::class)->missing(function (Request $request) {
+            return response()->json(['error' => "esa ruta no existe"],404);
         });
     });
 
