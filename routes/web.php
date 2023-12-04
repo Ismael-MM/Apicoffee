@@ -20,7 +20,7 @@ Route::get('/', function () {
 
 
 // Cambia el get('/html/main') por el nombre que quieras, ejemplo: 'get('/formulario')'
-Route::get('/html/main', function () {
+Route::get('/docente', function () {
     $pathToFile = public_path('html/main.html');
     return response()->file($pathToFile);
 });
