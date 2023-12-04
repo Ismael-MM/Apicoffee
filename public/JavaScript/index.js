@@ -29,20 +29,15 @@ document.getElementById('loginForm').addEventListener('submit', function (event)
     })
         .then(response => response.json()) // Convertir la respuesta a JSON
         .then(data => {
-            // Aquí puedes hacer algo con los datos devueltos por la API
-            console.log(data);
-
-            console.log(data.data)
-
-            console.log(data.data.token)
-
             // Por ejemplo, si hay un campo 'token' en la respuesta, puedes almacenarlo en localStorage
             if (data.data.token) {
                 console.log('Token received:', data.data.token);
                 localStorage.setItem('token', data.data.token);
+
+                window.location.href = '/docente';
             }
 
-            console.log(localStorage);
+
         })
         .catch(error => {
             // Manejar cualquier error que ocurra durante la solicitud

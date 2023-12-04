@@ -1,10 +1,15 @@
 const ampliarModulos = document.querySelector(".btn-modulo");
+let modulosDocente;
 
 ampliarModulos.addEventListener("click", añadirModulo);
 
+cogerDatosModulos();
+
+function guardarModulos(modulos) {
+    modulosDocente = modulos;
+}
+
 function añadirModulo() {
-
-
     const modulos = document.querySelectorAll(".pricing-column-wrapper");
     let numModulos = modulos.length;
 
@@ -43,7 +48,7 @@ function añadirModulo() {
                 </div>
                         
                 <div class="form-group">
-                    <select class="form-control pricing-row">
+                    <select class="form-control pricing-row select-modulo">
                         <option value="">Seleccione un Modulo</option>
                     </select>
                 </div>
@@ -77,22 +82,70 @@ function añadirModulo() {
     
         ultModulo.insertAdjacentElement('afterend', moduloDiv);
 
-        const modulosF = document.querySelectorAll(".pricing-column-wrapper");
+        console.log(moduloDiv.querySelector(".select-modulo"));
 
-        modulosF.forEach(e => {
-            modulosLocal.push(e);
+        console.log(modulosDocente);
+
+        rellenarModulosFormulario(moduloDiv, modulosDocente);
+
+    }
+}
+
+async function cogerDatosModulos() {
+    const tokenDocente = localStorage.getItem("token");
+
+    console.log(tokenDocente);
+
+    fetch('http://apicoffee.test/api/v1/modulos', {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${tokenDocente}`
+        },
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            modulosDocente = data.data;
+        })
+        .catch(error => {
+            console.error('Error en la solicitud:', error);
+        
+            if (error.response) {
+                // La respuesta de la API está presente, manejar según sea necesario
+                console.error('Respuesta de la API:', error.response);
+            }
         });
 
-        console.log(modulosLocal);
+}
 
-        if (localStorage.getItem("Modulos")) {
-            const modulosLocalStorage = JSON.parse(localStorage.getItem("Modulos"));
+function rellenarFormulario(datosModulos) {
+    console.log(datosModulos);
 
-            modulosLocalStorage.push(modulos[numModulos-1]);
-    
-            localStorage.setItem("Modulos", JSON.stringify(modulosLocalStorage));
-        } else {
-            localStorage.setItem("Modulos", JSON.stringify(modulosLocal));
-        }
-    }
+    const modulos = document.querySelectorAll(".pricing-column-wrapper");
+
+    modulos.forEach(moduloForm => {
+        rellenarModulosFormulario(moduloForm, datosModulos);
+    })
+}
+
+function rellenarModulosFormulario(moduloForm, datosModulos) {
+    console.log(moduloForm);
+    let select = moduloForm.querySelector(".select-modulo");
+
+    datosModulos.forEach(datos => {
+        let option = document.createElement("option");
+
+        option.value = datos.materia;
+        option.textContent = datos.materia;
+
+        console.log(select, option);
+        select.appendChild(option);
+
+        console.log(option);
+    })
 }
