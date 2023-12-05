@@ -19,7 +19,7 @@ document.getElementById('loginForm').addEventListener('submit', function (event)
     const password = document.getElementById('password').value;
 
     // Realizar la solicitud a la API utilizando fetch
-    fetch('http://apicoffee.test/api/login', {
+    fetch('/api/login', {
         method: 'POST', // O el método que esté configurado en tu API
         headers: {
             'Content-Type': 'application/json'
