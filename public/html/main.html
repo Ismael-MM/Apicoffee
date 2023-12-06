@@ -27,18 +27,40 @@
         <div class="margin-body">
 
             <div class="row">
-                <div class="col-sm-11 col-md-11">
-                    <div class="wpb_text_column wpb_content_element ">
-                        <div class="wpb_wrapper">
-                            <div class="title-h1 text-center"><span><span class="light">Tabla Profesores</span></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-1 col-md-1 mt-3 d-flex align-items-center justify-content-center">
+                <div class="col-sm-1 col-md-1 mt-2 d-flex align-items-center justify-content-center">
                     <button type="button"
                         class="btn-modulo btn btn-light rounded btn-50x50 d-flex align-items-center justify-content-center">
                         <h1 class="d-flex align-items-center justify-content-center">+</h1>
                     </button>
+                </div>
+                <div class="col-sm-10 col-md-10 mt-2">
+                    <div class="wpb_text_column wpb_content_element ">
+                        <div class="wpb_wrapper">
+                            <h1 class="text-white text-center"><span><span class="light">Tabla Profesores</span></h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-1 col-md-1 mt-2 d-flex align-items-center justify-content-center">
+                    <h2 class="horas_totales text-white d-flex align-items-center justify-content-center">0</h2>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-3 col-md-3 d-flex align-items-center justify-content-center">
+                    <h5 class="horas_totales text-white d-flex align-items-center justify-content-center">
+                        Nombre: <h5 class="nombre_docente pl-2 text-white">Luis Gordillo</h5></h5>
+                </div>
+                <div class="col-sm-3 col-md-3 d-flex align-items-center justify-content-center">
+                    <h5 class="horas_totales text-white d-flex align-items-center justify-content-center">
+                        Departamento: <h5 class="departamento_docente pl-2 text-white">Informatica y Comunicaciones</h5></h5>
+                </div>
+                <div class="col-sm-3 col-md-3 d-flex align-items-center justify-content-center">
+                    <h5 class="horas_totales text-white d-flex align-items-center justify-content-center">
+                        Curso: <h5 class="curso_docente pl-2 text-white">2023/2024</h5></h5>
+                </div>
+                <div class="col-sm-3 col-md-3 d-flex align-items-center justify-content-center">
+                    <h5 class="horas_totales text-white d-flex align-items-center justify-content-center">
+                        Especialidad: <h5 class="especialidad_docente pl-2 text-white">Informatica</h5></h5>
                 </div>
             </div>
 
@@ -58,11 +80,11 @@
                         </div>
                         <form action="" class="form">
                             <div class="form-group">
-                                <input type="text" class="form-control pricing-row" placeholder="Elige el turno M/T">
+                                <input type="text" class="form-control pricing-row turno_docente" placeholder="Elige el turno M/T">
                             </div>
 
                             <div class="form-group">
-                                <input type="text" class="form-control pricing-row"
+                                <input type="text" class="form-control pricing-row curso_docente"
                                     placeholder="Elige el Curso y el Ciclo">
                             </div>
 
@@ -73,24 +95,25 @@
                             </div>
 
                             <div class="form-group">
-                                <input type="number" class="form-control pricing-row" placeholder="Horas Semanales">
+                                <input type="number" disabled class="form-control pricing-row horas_sem"
+                                    placeholder="Horas Semanales">
                             </div>
 
                             <div class="form-group">
-                                <select class="form-control pricing-row">
+                                <select class="form-control pricing-row select-distribucion">
                                     <option value="">Seleccione la distribucion</option>
                                 </select>
                             </div>
 
                             <div class="form-group">
-                                <select class="form-control pricing-row">
+                                <select class="form-control pricing-row aula-modulo">
                                     <option value="">Seleccione el Aula/Taller</option>
                                 </select>
                             </div>
 
                             <div class="pricing-footer">
                                 <div class="gem-button-container gem-button-position-center">
-                                    <a href="#" class="gem-button gem-green">Order Now</a>
+                                    <button type="button" class="gem-button gem-green btn-modulo">Order Now</button>
                                 </div>
                             </div>
                         </form>
@@ -111,11 +134,11 @@
                         </div>
                         <form action="" class="form">
                             <div class="form-group">
-                                <input type="text" class="form-control pricing-row" placeholder="Elige el turno M/T">
+                                <input type="text" class="form-control pricing-row turno_docente" placeholder="Elige el turno M/T">
                             </div>
 
                             <div class="form-group">
-                                <input type="text" class="form-control pricing-row"
+                                <input type="text" class="form-control pricing-row curso_docente"
                                     placeholder="Elige el Curso y el Ciclo">
                             </div>
 
@@ -126,24 +149,25 @@
                             </div>
 
                             <div class="form-group">
-                                <input type="number" class="form-control pricing-row" placeholder="Horas Semanales">
+                                <input type="number" disabled class="form-control pricing-row horas_sem"
+                                    placeholder="Horas Semanales">
                             </div>
 
                             <div class="form-group">
-                                <select class="form-control pricing-row">
+                                <select class="form-control pricing-row select-distribucion">
                                     <option value="">Seleccione la distribucion</option>
                                 </select>
                             </div>
 
                             <div class="form-group">
-                                <select class="form-control pricing-row">
+                                <select class="form-control pricing-row aula-modulo">
                                     <option value="">Seleccione el Aula/Taller</option>
                                 </select>
                             </div>
 
                             <div class="pricing-footer">
                                 <div class="gem-button-container gem-button-position-center">
-                                    <a href="#" class="gem-button gem-green">Order Now</a>
+                                    <button type="button" class="gem-button gem-green btn-modulo">Order Now</button>
                                 </div>
                             </div>
                         </form>

@@ -23,7 +23,7 @@ Route::get('/', function () {
 Route::get('/docente', function () {
     $pathToFile = public_path('html/main.html');
     return response()->file($pathToFile);
-})->middleware('auth')->name('formulario');
+})->name('formulario');
 Route::get('/jefatura', function () {
     $pathToFile = public_path('html/jefatura.html');
     return response()->file($pathToFile);

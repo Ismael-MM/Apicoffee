@@ -1,31 +1,59 @@
 const ampliarModulos = document.querySelector(".btn-modulo");
+const tokenDocente = localStorage.getItem("token");
 let modulosDocente;
 
 ampliarModulos.addEventListener("click", añadirModulo);
 
 cogerDatosModulos();
+datosDocente();
+guardarDatosModulos();
 
-function guardarModulos(modulos) {
-    modulosDocente = modulos;
+function datosDocente() {
+    let nombre_docente = document.querySelector(".nombre_docente");
+    let departamento_docente = document.querySelector(".departamento_docente");
+    let curso_docente = document.querySelector(".curso_docente");
+    let especialidad_docente = document.querySelector(".especialidad_docente");
+
+    fetch(`/api/user`, {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${tokenDocente}`
+        },
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Manejar la respuesta exitosa y trabajar con los datos del módulo
+            console.log('Información del user:', data);
+        })
+        .catch(error => {
+            // Manejar errores, como una conexión fallida o un error en el servidor
+            console.error('Error en la solicitud:', error);
+        });
 }
 
 function añadirModulo() {
     const modulos = document.querySelectorAll(".pricing-column-wrapper");
     let numModulos = modulos.length;
 
-    if(numModulos < 5) {
-        let ultModulo = modulos[numModulos-1];
+    if (numModulos < 5) {
+        let ultModulo = modulos[numModulos - 1];
 
-        let numModulo = numModulos+1;
-    
+        let numModulo = numModulos + 1;
+
         const moduloDiv = document.createElement("div");
-        
+
         moduloDiv.classList.add("col-sm-3");
         moduloDiv.classList.add("col-md-2");
         moduloDiv.classList.add("pricing-column-wrapper");
-    
-        const moduloHTML = 
-        `
+
+        const moduloHTML =
+            `
         <div class="pricing-column">
             <div class="pricing-price-row">
                 <div class="pricing-price-wrapper">
@@ -40,11 +68,11 @@ function añadirModulo() {
             </div>
             <form action="" class="form">
                 <div class="form-group">
-                    <input type="text" class="form-control pricing-row" placeholder="Elige el turno M/T">
+                    <input type="text" class="form-control pricing-row turno_docente" placeholder="Elige el turno M/T">
                 </div>
                         
                 <div class="form-group">
-                    <input type="text" class="form-control pricing-row" placeholder="Elige el Curso y el Ciclo">
+                    <input type="text" class="form-control pricing-row curso_docente" placeholder="Elige el Curso y el Ciclo">
                 </div>
                         
                 <div class="form-group">
@@ -54,49 +82,46 @@ function añadirModulo() {
                 </div>
                         
                 <div class="form-group">
-                    <input type="number" class="form-control pricing-row" placeholder="Horas Semanales">
+                    <input type="number" disabled class="form-control pricing-row horas_sem" placeholder="Horas Semanales">
                 </div>
                         
                 <div class="form-group">
-                    <select class="form-control pricing-row">
+                    <select class="form-control pricing-row select-distribucion">
                         <option value="">Seleccione la distribucion</option>
                     </select>
                 </div>
     
                 <div class="form-group">
-                    <select class="form-control pricing-row">
+                    <select class="form-control pricing-row aula-modulo">
                         <option value="">Seleccione el Aula/Taller</option>
                     </select>
                 </div>
                         
                 <div class="pricing-footer">
                     <div class="gem-button-container gem-button-position-center">
-                        <a href="#" class="gem-button gem-green">Order Now</a>
+                        <button type="button" class="gem-button gem-green btn-modulo">Order Now</button>
                     </div>
                 </div>
             </form>
         </div>
         `;
-    
+
         moduloDiv.innerHTML = moduloHTML;
-    
+
         ultModulo.insertAdjacentElement('afterend', moduloDiv);
 
         console.log(moduloDiv.querySelector(".select-modulo"));
 
         console.log(modulosDocente);
 
-        rellenarModulosFormulario(moduloDiv, modulosDocente);
-
+        rellenarFormulario(modulosDocente);
     }
 }
 
 async function cogerDatosModulos() {
-    const tokenDocente = localStorage.getItem("token");
-
     console.log(tokenDocente);
 
-    fetch('http://apicoffee.test/api/v1/modulos', {
+    fetch('/api/v1/modulos', {
         method: 'GET',
         headers: {
             'Accept': 'application/json',
@@ -111,16 +136,17 @@ async function cogerDatosModulos() {
         })
         .then(data => {
             modulosDocente = data.data;
+
+            rellenarFormulario(modulosDocente);
         })
         .catch(error => {
             console.error('Error en la solicitud:', error);
-        
+
             if (error.response) {
                 // La respuesta de la API está presente, manejar según sea necesario
                 console.error('Respuesta de la API:', error.response);
             }
         });
-
 }
 
 function rellenarFormulario(datosModulos) {
@@ -131,21 +157,180 @@ function rellenarFormulario(datosModulos) {
     modulos.forEach(moduloForm => {
         rellenarModulosFormulario(moduloForm, datosModulos);
     })
+
+    modulos.forEach(moduloForm => {
+        let select = moduloForm.querySelector(".select-modulo");
+        let codigo = moduloForm.querySelector(".pricing_row_title");
+        let horas_sem = moduloForm.querySelector(".horas_sem");
+        let distribucion = moduloForm.querySelector(".select-distribucion");
+
+        select.addEventListener("change", () => actualizarDatos(select, codigo, horas_sem, distribucion));
+    })
 }
 
 function rellenarModulosFormulario(moduloForm, datosModulos) {
-    console.log(moduloForm);
     let select = moduloForm.querySelector(".select-modulo");
 
-    datosModulos.forEach(datos => {
-        let option = document.createElement("option");
+    if (select.options.length === 1) {
+        datosModulos.forEach(datos => {
+            let option = document.createElement("option");
 
-        option.value = datos.materia;
-        option.textContent = datos.materia;
+            option.value = datos.id;
+            option.textContent = datos.materia;
 
-        console.log(select, option);
-        select.appendChild(option);
+            console.log(select, option);
+            select.appendChild(option);
+        });
+    }
+}
 
-        console.log(option);
+function actualizarDatos(select, codigo, horas_sem, distribucion) {
+    let materiaSeleccionada = select.value;
+
+    fetch(`/api/v1/modulos/${materiaSeleccionada}`, {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${tokenDocente}`
+        },
     })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Manejar la respuesta exitosa y trabajar con los datos del módulo
+            console.log('Información del módulo:', data);
+            codigo.textContent = data.data.codigo;
+            horas_sem.value = data.data.h_semanales;
+
+            let horas_totales = document.querySelector(".horas_totales");
+
+            horas_totales.textContent = sumarHorasTotales();
+
+            while (distribucion.options.length > 1) {
+                distribucion.remove(1);
+            }
+
+            distribucionHoras(data.data.h_semanales).forEach(e => {
+                let option = document.createElement("option");
+
+                option.value = e;
+                option.textContent = e;
+
+                distribucion.appendChild(option);
+            });
+
+        })
+        .catch(error => {
+            // Manejar errores, como una conexión fallida o un error en el servidor
+            console.error('Error en la solicitud:', error);
+        });
+
+}
+
+function distribucionHoras(horas_sem) {
+    function separarNumeros(numero, actual = [], todasLasSumas = []) {
+        if (actual.length === 5) {
+            // Cuando ya tenemos tres números, verificamos si su suma es igual al número original
+            const sumaActual = actual.reduce((a, b) => a + b, 0);
+            if (sumaActual === numero && !existeCombinacion(todasLasSumas, actual)) {
+                todasLasSumas.push([...actual]);
+            }
+            return;
+        }
+
+        for (let i = 0; i <= 3; i++) {
+            // Llamada recursiva con la nueva opción
+            separarNumeros(numero, [...actual, i], todasLasSumas);
+        }
+    }
+
+    // Función auxiliar para verificar si una combinación ya existe en el array
+    function existeCombinacion(array, combinacion) {
+        const combinacionOrdenada = combinacion.slice().sort();
+        return array.some(e => {
+            const arrayOrdenado = e.slice().sort();
+            return arrayOrdenado.join('') === combinacionOrdenada.join('');
+        });
+    }
+
+    const todasLasSumas = [];
+    separarNumeros(horas_sem, [], todasLasSumas);
+
+    function limpiarArray(array) {
+        const options = [];
+
+        array.forEach(e => {
+            let cadena = e.filter(el => el != 0).join(' + ');
+
+            options.push(cadena);
+        });
+
+        return options;
+    }
+
+    return limpiarArray(todasLasSumas);
+}
+
+function sumarHorasTotales() {
+    const modulos = document.querySelectorAll(".pricing-column-wrapper");
+    let horasTotales = 0;
+
+    modulos.forEach(moduloForm => {
+        let horas = moduloForm.querySelector(".horas_sem");
+
+        if (horas.value) {
+            horasTotales += parseInt(horas.value);
+        }
+
+        console.log(horasTotales);
+    });
+
+    return horasTotales;
+}
+
+function guardarDatosModulos() {
+    const modulos = document.querySelectorAll(".pricing-column-wrapper");
+
+    modulos.forEach(modulo => {
+        let btn = modulo.querySelector(".btn-modulo");
+
+        btn.addEventListener("click", () => {
+            let materia = modulo.querySelector(".select-modulo");
+            let codigo = modulo.querySelector(".pricing_row_title");
+            let horas_sem = modulo.querySelector(".horas_sem");
+            let distribucion = modulo.querySelector(".select-distribucion");
+            let turno = modulo.querySelector(".turno_docente");
+            let curso = modulo.querySelector(".curso_docente");
+            let aula = modulo.querySelector(".aula-modulo");
+
+            const datosModulo = {
+                materia: materia.options[materia.selectedIndex].textContent,
+                codigo: codigo.textContent,
+                horas_sem: horas_sem.value,
+                distribucion: distribucion.options[distribucion.selectedIndex].textContent,
+                turno: turno.value,
+                curso: curso.value,
+                aula: aula.options[aula.selectedIndex].textContent
+            }
+
+            let modulosStorage = JSON.parse(localStorage.getItem("Modulos")) || [];
+
+            // Asegúrate de que modulosStorage sea un array
+            if (!Array.isArray(modulosStorage)) {
+                modulosStorage = [];
+            }
+            
+            // Agrega los nuevos datos al array
+            modulosStorage.push(datosModulo);
+            
+            // Guarda el array actualizado en el almacenamiento local
+            localStorage.setItem("Modulos", JSON.stringify(modulosStorage));
+
+            console.log(datosModulo);
+        });
+    });
 }
