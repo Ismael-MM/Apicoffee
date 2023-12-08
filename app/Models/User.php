@@ -47,4 +47,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Modulo::class);
     }
+
+    public function especialidad()
+    {
+        return $this->belongsTo(Especialidad::class);
+    }
 }

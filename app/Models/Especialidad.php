@@ -17,4 +17,9 @@ class Especialidad extends Model
     {
         return $this->hasMany(Modulo::class);
     }
+
+    public function usuario()
+    {
+        return $this->hasMany(User::class);
+    }
 }
