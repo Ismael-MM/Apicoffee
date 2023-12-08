@@ -26,9 +26,7 @@ class EspecialidadController extends Controller
      */
     public function store(EspecialidadForm $request)
     {
-        $especialidad = Especialidad::create([
-            'nombre' => $request->nombre,
-        ]);
+        $especialidad = Especialidad::create($request->all());
 
         // Finalmente, devuelve una respuesta JSON con el nuevo registro de módulo y un mensaje de éxito.
         return new EspecialidadResource($especialidad);
