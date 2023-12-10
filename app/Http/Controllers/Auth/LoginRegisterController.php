@@ -37,7 +37,10 @@ class LoginRegisterController extends Controller
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password)
+            'password' => Hash::make($request->password),
+            'rol' => $request->rol,
+            'horas_total' => $request->horas_total,
+            'observaciones' => $request->observaciones,
         ]);
 
         $data['user'] = $user;

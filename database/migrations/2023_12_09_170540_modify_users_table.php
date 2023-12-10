@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->string('observaciones');
-            $table->string('horas_total');
+            $table->unsignedTinyInteger('horas_total');
             $table->string('rol');
         });
     }
