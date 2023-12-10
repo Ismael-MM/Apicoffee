@@ -1,8 +1,10 @@
 const ampliarModulos = document.querySelector(".btn-modulo");
+const añadirObservacion = document.querySelector(".btn-observacion");
 const tokenDocente = localStorage.getItem("token");
 let modulosDocente;
 
 ampliarModulos.addEventListener("click", añadirModulo);
+añadirObservacion.addEventListener("click", añadirObservacionDocente);
 
 cogerDatosModulos();
 datosDocente();
@@ -28,13 +30,57 @@ function datosDocente() {
             return response.json();
         })
         .then(data => {
-            // Manejar la respuesta exitosa y trabajar con los datos del módulo
             console.log('Información del user:', data);
+            nombre_docente.textContent = data.name;
+
+            let fechaActual = new Date();
+            let mesActual = fechaActual.getMonth() + 1;
+            let añoAcademico;
+
+            if (mesActual >= 7) {
+                añoAcademico = fechaActual.getFullYear();
+            } else {
+                añoAcademico = fechaActual.getFullYear() - 1;
+            }
+
+            var siguienteAñoAcademico = añoAcademico + 1;
+
+            var fechaCurso = añoAcademico + '/' + (siguienteAñoAcademico.toString().slice(-2));
+
+            curso_docente.textContent = fechaCurso;
+
+            const Docente = {
+                nombre: data.name,
+                observaciones: "",
+                modulos: [],
+            }
+
+            localStorage.setItem("Docente", JSON.stringify(Docente));
         })
         .catch(error => {
-            // Manejar errores, como una conexión fallida o un error en el servidor
             console.error('Error en la solicitud:', error);
         });
+}
+
+function añadirObservacionDocente() {
+    $('#modal').modal('show');
+}
+
+function cerrarModal() {
+    var modal = document.getElementById("modal");
+    modal.style.display = "none";
+}
+
+function guardarObservacion() {
+    let observacion = document.getElementById("observacion").value;
+
+    let Docente = JSON.parse(localStorage.getItem("Docente"));
+
+    Docente.observaciones = observacion;
+
+    localStorage.setItem("Docente", JSON.stringify(Docente));
+
+    $('#modal').modal('hide');
 }
 
 function añadirModulo() {
@@ -72,7 +118,7 @@ function añadirModulo() {
                 </div>
                         
                 <div class="form-group">
-                    <input type="text" class="form-control pricing-row curso_docente" placeholder="Elige el Curso y el Ciclo">
+                    <input type="text" disabled class="form-control pricing-row curso_docente" placeholder="Elige el Curso y el Ciclo">
                 </div>
                         
                 <div class="form-group">
@@ -163,8 +209,17 @@ function rellenarFormulario(datosModulos) {
         let codigo = moduloForm.querySelector(".pricing_row_title");
         let horas_sem = moduloForm.querySelector(".horas_sem");
         let distribucion = moduloForm.querySelector(".select-distribucion");
+        let curso = moduloForm.querySelector(".curso_docente");
 
-        select.addEventListener("change", () => actualizarDatos(select, codigo, horas_sem, distribucion));
+        const datosHTML = {
+            select: select,
+            codigo: codigo,
+            horas_sem: horas_sem,
+            distribucion: distribucion,
+            curso: curso
+        }
+
+        select.addEventListener("change", () => actualizarDatos(datosHTML));
     })
 }
 
@@ -178,14 +233,13 @@ function rellenarModulosFormulario(moduloForm, datosModulos) {
             option.value = datos.id;
             option.textContent = datos.materia;
 
-            console.log(select, option);
             select.appendChild(option);
         });
     }
 }
 
-function actualizarDatos(select, codigo, horas_sem, distribucion) {
-    let materiaSeleccionada = select.value;
+function actualizarDatos(datosHTML) {
+    let materiaSeleccionada = datosHTML.select.value;
 
     fetch(`/api/v1/modulos/${materiaSeleccionada}`, {
         method: 'GET',
@@ -201,17 +255,21 @@ function actualizarDatos(select, codigo, horas_sem, distribucion) {
             return response.json();
         })
         .then(data => {
-            // Manejar la respuesta exitosa y trabajar con los datos del módulo
-            console.log('Información del módulo:', data);
-            codigo.textContent = data.data.codigo;
-            horas_sem.value = data.data.h_semanales;
+            datosHTML.codigo.textContent = data.data.codigo;
+            datosHTML.horas_sem.value = data.data.h_semanales;
+
+            if (data.data.curso == null) {
+                datosHTML.curso.value = "No hay cursos";
+            } else {
+                datosHTML.curso.value = data.data.curso;
+            }
 
             let horas_totales = document.querySelector(".horas_totales");
 
             horas_totales.textContent = sumarHorasTotales();
 
-            while (distribucion.options.length > 1) {
-                distribucion.remove(1);
+            while (datosHTML.distribucion.options.length > 1) {
+                datosHTML.distribucion.remove(1);
             }
 
             distribucionHoras(data.data.h_semanales).forEach(e => {
@@ -220,7 +278,7 @@ function actualizarDatos(select, codigo, horas_sem, distribucion) {
                 option.value = e;
                 option.textContent = e;
 
-                distribucion.appendChild(option);
+                datosHTML.distribucion.appendChild(option);
             });
 
         })
@@ -317,20 +375,21 @@ function guardarDatosModulos() {
                 aula: aula.options[aula.selectedIndex].textContent
             }
 
-            let modulosStorage = JSON.parse(localStorage.getItem("Modulos")) || [];
+            let Docente = JSON.parse(localStorage.getItem("Docente"));
 
-            // Asegúrate de que modulosStorage sea un array
-            if (!Array.isArray(modulosStorage)) {
-                modulosStorage = [];
+            let valido = true;
+
+            Docente.modulos.forEach(modulo => {
+                if (datosModulo.codigo == modulo.codigo) {
+                    valido = false;
+                }
+            });
+
+            if (valido) {
+                Docente.modulos.push(datosModulo);
+
+                localStorage.setItem("Docente", JSON.stringify(Docente));
             }
-            
-            // Agrega los nuevos datos al array
-            modulosStorage.push(datosModulo);
-            
-            // Guarda el array actualizado en el almacenamiento local
-            localStorage.setItem("Modulos", JSON.stringify(modulosStorage));
-
-            console.log(datosModulo);
         });
     });
 }
