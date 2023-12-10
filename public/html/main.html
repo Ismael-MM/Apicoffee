@@ -15,6 +15,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../Style/main.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    
     <title>Proyecto | 1º Trimestre</title>
 </head>
 
@@ -25,45 +26,45 @@
 
     <div id="mainCoantiner">
         <div class="margin-body">
-            <div class="row mb-2">
+            <div class="row mb-4">
                 <div class="col-sm-1 col-md-1 mt-2 d-flex align-items-center justify-content-center">
                     <button type="button"
                         class="btn-modulo btn btn-light rounded btn-50x50 d-flex align-items-center justify-content-center">
                         <h1 class="d-flex align-items-center justify-content-center">+</h1>
                     </button>
                 </div>
-                <div class="col-sm-10 col-md-10 mt-2">
+                <div class="col-sm-10 col-md-10 mt-4">
                     <div class="wpb_text_column wpb_content_element ">
                         <div class="wpb_wrapper">
                             <h1 class="text-white text-center"><span><span class="light">Tabla Profesores</span></h2>
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-1 col-md-1 mt-2 d-flex align-items-center justify-content-center">
-                    <h2 class="horas_totales text-white d-flex align-items-center justify-content-center">0</h2>
+                <div class="col-sm-1 col-md-1 mt-4 d-flex align-items-center justify-content-center">
+                    <h1 class="horas_totales text-white d-flex align-items-center justify-content-center">0</h1>
                 </div>
             </div>
 
-            <div class="row mt-2 mb-2">
+            <div class="row mt-2 mb-2 mt-3">
                 <div class="col-sm-3 col-md-3 d-flex align-items-center justify-content-center">
                     <h5 class="horas_totales text-white d-flex align-items-center justify-content-center">
-                        Nombre: <h5 class="nombre_docente pl-2 text-white">Luis Gordillo</h5></h5>
+                        Nombre: <h5 class="nombre_docente pl-2 text-white"></h5></h5>
                 </div>
                 <div class="col-sm-3 col-md-3 d-flex align-items-center justify-content-center">
                     <h5 class="horas_totales text-white d-flex align-items-center justify-content-center">
-                        Departamento: <h5 class="departamento_docente pl-2 text-white">Informatica y Comunicaciones</h5></h5>
+                        Departamento: <h5 class="departamento_docente pl-2 text-white"></h5></h5>
                 </div>
                 <div class="col-sm-3 col-md-3 d-flex align-items-center justify-content-center">
                     <h5 class="horas_totales text-white d-flex align-items-center justify-content-center">
-                        Curso: <h5 class="curso_docente pl-2 text-white">2023/2024</h5></h5>
+                        Curso: <h5 class="curso_docente pl-2 text-white"></h5></h5>
                 </div>
                 <div class="col-sm-3 col-md-3 d-flex align-items-center justify-content-center">
                     <h5 class="horas_totales text-white d-flex align-items-center justify-content-center">
-                        Especialidad: <h5 class="especialidad_docente pl-2 text-white">Informatica</h5></h5>
+                        Especialidad: <h5 class="especialidad_docente pl-2 text-white"></h5></h5>
                 </div>
             </div>
 
-            <div class="row justify-content-center mt-5">
+            <div class="row justify-content-center mt-3">
                 <div class="col-sm-3 col-md-2 pricing-column-wrapper">
                     <div class="pricing-column">
                         <div class="pricing-price-row">
@@ -83,7 +84,7 @@
                             </div>
 
                             <div class="form-group">
-                                <input type="text" class="form-control pricing-row curso_docente"
+                                <input type="text" disabled class="form-control pricing-row curso_docente"
                                     placeholder="Elige el Curso y el Ciclo">
                             </div>
 
@@ -137,7 +138,7 @@
                             </div>
 
                             <div class="form-group">
-                                <input type="text" class="form-control pricing-row curso_docente"
+                                <input type="text" disabled class="form-control pricing-row curso_docente"
                                     placeholder="Elige el Curso y el Ciclo">
                             </div>
 
@@ -170,6 +171,39 @@
                                 </div>
                             </div>
                         </form>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-sm-9 col-md-9">
+
+                </div>
+                <div class="col-sm-3 col-md-3 d-flex align-items-center justify-content-center">
+                    <button type="button"
+                        class="mb-5 btn-observacion btn btn-light rounded d-flex align-items-center justify-content-center">
+                        <h4 class="m-0 d-flex align-items-center justify-content-center">Añadir observaciones</h4>
+                    </button>
+                </div>
+            </div>
+
+            <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalLabel">Añadir Observación</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <label for="observacion">Observación:</label>
+                            <textarea id="observacion" class="form-control" rows="4"></textarea>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                            <button type="button" class="btn btn-primary" onclick="guardarObservacion()">Guardar</button>
+                        </div>
                     </div>
                 </div>
             </div>
