@@ -1,9 +1,8 @@
 body {
-    background-color: #31393c;
+    background-color: #31393c !important;
 }
 
 #mainCoantiner {
-    background-color: #31393c;
     height: 100%;
     width: 100%;
 }
