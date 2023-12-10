@@ -28,3 +28,9 @@ Route::get('/jefatura', function () {
     $pathToFile = public_path('html/jefatura.html');
     return response()->file($pathToFile);
 });
+
+Route::get('/dashboard', function () {
+    $pathToFile = public_path('html/dashboard.html');
+    return response()->file($pathToFile);
+});
+
