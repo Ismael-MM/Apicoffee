@@ -356,7 +356,7 @@ function guardarDatosModulos() {
     const opcionesNegativas = {
         materia: "Seleccione un Modulo",
         codigo: "___",
-        horas_sem : "Horas Semanales",
+        horas_sem: "Horas Semanales",
         distribucion: "Seleccione la distribucion",
         turno: "Elige el turno M/T",
         curso: "Elige el Curso y el Ciclo",
@@ -367,25 +367,23 @@ function guardarDatosModulos() {
         let btn = modulo.querySelector(".btn-modulo");
 
         btn.addEventListener("click", () => {
+            let materia = modulo.querySelector(".select-modulo");
+            let codigo = modulo.querySelector(".pricing_row_title");
+            let horas_sem = modulo.querySelector(".horas_sem");
+            let distribucion = modulo.querySelector(".select-distribucion");
+            let turno = modulo.querySelector(".turno_docente");
+            let curso = modulo.querySelector(".curso_docente");
+            let aula = modulo.querySelector(".aula-modulo");
 
             if (
-                opcionesNegativas.materia,
-                opcionesNegativas.codigo,
-                opcionesNegativas.horas_sem,
-                opcionesNegativas.distribucion,
-                opcionesNegativas.turno,
-                opcionesNegativas.curso,
-                opcionesNegativas.aula
-            ) 
-            {
-                let materia = modulo.querySelector(".select-modulo");
-                let codigo = modulo.querySelector(".pricing_row_title");
-                let horas_sem = modulo.querySelector(".horas_sem");
-                let distribucion = modulo.querySelector(".select-distribucion");
-                let turno = modulo.querySelector(".turno_docente");
-                let curso = modulo.querySelector(".curso_docente");
-                let aula = modulo.querySelector(".aula-modulo");
-    
+                opcionesNegativas.materia != materia &&
+                opcionesNegativas.codigo != codigo &&
+                opcionesNegativas.horas_sem != horas_sem &&
+                opcionesNegativas.distribucion != distribucion &&
+                opcionesNegativas.turno != turno &&
+                opcionesNegativas.curso != curso
+                //opcionesNegativas.aula != aula
+            ) {
                 const datosModulo = {
                     materia: materia.options[materia.selectedIndex].textContent,
                     codigo: codigo.textContent,
@@ -395,24 +393,24 @@ function guardarDatosModulos() {
                     curso: curso.value,
                     aula: aula.options[aula.selectedIndex].textContent
                 }
-    
+
                 let Docente = JSON.parse(localStorage.getItem("Docente"));
-    
+
                 let valido = true;
-    
+
                 Docente.modulos.forEach(modulo => {
                     if (datosModulo.codigo == modulo.codigo) {
                         valido = false;
                     }
                 });
-    
+
                 if (valido) {
                     Docente.modulos.push(datosModulo);
-    
+
                     localStorage.setItem("Docente", JSON.stringify(Docente));
                 }
             }
-            
+
         });
     });
 }

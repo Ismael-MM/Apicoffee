@@ -34,7 +34,7 @@ Route::get('/dashboard', function () {
     return response()->file($pathToFile);
 });
 
-Route::get('/jefe_departamento', function () {
+Route::get('/jefeDepartamento', function () {
     $pathToFile = public_path('html/jefeDepartamento.html');
     return response()->file($pathToFile);
 });
