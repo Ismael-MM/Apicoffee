@@ -353,43 +353,66 @@ function sumarHorasTotales() {
 function guardarDatosModulos() {
     const modulos = document.querySelectorAll(".pricing-column-wrapper");
 
+    const opcionesNegativas = {
+        materia: "Seleccione un Modulo",
+        codigo: "___",
+        horas_sem : "Horas Semanales",
+        distribucion: "Seleccione la distribucion",
+        turno: "Elige el turno M/T",
+        curso: "Elige el Curso y el Ciclo",
+        aula: "Seleccione el Aula/Taller"
+    }
+
     modulos.forEach(modulo => {
         let btn = modulo.querySelector(".btn-modulo");
 
         btn.addEventListener("click", () => {
-            let materia = modulo.querySelector(".select-modulo");
-            let codigo = modulo.querySelector(".pricing_row_title");
-            let horas_sem = modulo.querySelector(".horas_sem");
-            let distribucion = modulo.querySelector(".select-distribucion");
-            let turno = modulo.querySelector(".turno_docente");
-            let curso = modulo.querySelector(".curso_docente");
-            let aula = modulo.querySelector(".aula-modulo");
 
-            const datosModulo = {
-                materia: materia.options[materia.selectedIndex].textContent,
-                codigo: codigo.textContent,
-                horas_sem: horas_sem.value,
-                distribucion: distribucion.options[distribucion.selectedIndex].textContent,
-                turno: turno.value,
-                curso: curso.value,
-                aula: aula.options[aula.selectedIndex].textContent
-            }
-
-            let Docente = JSON.parse(localStorage.getItem("Docente"));
-
-            let valido = true;
-
-            Docente.modulos.forEach(modulo => {
-                if (datosModulo.codigo == modulo.codigo) {
-                    valido = false;
+            if (
+                opcionesNegativas.materia,
+                opcionesNegativas.codigo,
+                opcionesNegativas.horas_sem,
+                opcionesNegativas.distribucion,
+                opcionesNegativas.turno,
+                opcionesNegativas.curso,
+                opcionesNegativas.aula
+            ) 
+            {
+                let materia = modulo.querySelector(".select-modulo");
+                let codigo = modulo.querySelector(".pricing_row_title");
+                let horas_sem = modulo.querySelector(".horas_sem");
+                let distribucion = modulo.querySelector(".select-distribucion");
+                let turno = modulo.querySelector(".turno_docente");
+                let curso = modulo.querySelector(".curso_docente");
+                let aula = modulo.querySelector(".aula-modulo");
+    
+                const datosModulo = {
+                    materia: materia.options[materia.selectedIndex].textContent,
+                    codigo: codigo.textContent,
+                    horas_sem: horas_sem.value,
+                    distribucion: distribucion.options[distribucion.selectedIndex].textContent,
+                    turno: turno.value,
+                    curso: curso.value,
+                    aula: aula.options[aula.selectedIndex].textContent
                 }
-            });
-
-            if (valido) {
-                Docente.modulos.push(datosModulo);
-
-                localStorage.setItem("Docente", JSON.stringify(Docente));
+    
+                let Docente = JSON.parse(localStorage.getItem("Docente"));
+    
+                let valido = true;
+    
+                Docente.modulos.forEach(modulo => {
+                    if (datosModulo.codigo == modulo.codigo) {
+                        valido = false;
+                    }
+                });
+    
+                if (valido) {
+                    Docente.modulos.push(datosModulo);
+    
+                    localStorage.setItem("Docente", JSON.stringify(Docente));
+                }
             }
+            
         });
     });
 }

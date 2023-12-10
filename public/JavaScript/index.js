@@ -1,16 +1,3 @@
-//const login_btn = document.querySelector(".login-btn");
-
-//login_btn.addEventListener("click", login);
-
-function login() {
-    let username = document.getElementById('username').value;
-    let password = document.getElementById('password').value;
-
-    if (username == "admin" && password == "1234") {
-        window.location.href = "./html/main.html";
-    }
-}
-
 document.getElementById('loginForm').addEventListener('submit', function (event) {
     event.preventDefault(); // Evitar que el formulario se envíe de manera convencional
 
@@ -34,7 +21,9 @@ document.getElementById('loginForm').addEventListener('submit', function (event)
                 console.log('Token received:', data.data.token);
                 localStorage.setItem('token', data.data.token);
 
-                window.location.href = '/docente';
+                console.log(data.data.user.rol);
+
+                window.location.href = `/${data.data.user.rol}`;
             }
 
 
