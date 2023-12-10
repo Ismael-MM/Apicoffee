@@ -323,12 +323,23 @@ function guardarDatosModulos() {
             if (!Array.isArray(modulosStorage)) {
                 modulosStorage = [];
             }
-            
+
+            let valido = true;
+
+            modulosStorage.forEach(modulo => {
+                if (datosModulo.codigo == modulo.codigo) {
+                    valido = false;
+                }
+            });
+
             // Agrega los nuevos datos al array
-            modulosStorage.push(datosModulo);
-            
-            // Guarda el array actualizado en el almacenamiento local
-            localStorage.setItem("Modulos", JSON.stringify(modulosStorage));
+            if (valido) {
+                modulosStorage.push(datosModulo);
+
+                // Guarda el array actualizado en el almacenamiento local
+                localStorage.setItem("Modulos", JSON.stringify(modulosStorage));
+            }
+
 
             console.log(datosModulo);
         });
