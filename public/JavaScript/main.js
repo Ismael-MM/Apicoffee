@@ -36,18 +36,26 @@ function datosDocente() {
             let fechaActual = new Date();
             let mesActual = fechaActual.getMonth() + 1;
             let añoAcademico;
-    
+
             if (mesActual >= 7) {
                 añoAcademico = fechaActual.getFullYear();
             } else {
                 añoAcademico = fechaActual.getFullYear() - 1;
             }
-    
+
             var siguienteAñoAcademico = añoAcademico + 1;
-    
+
             var fechaCurso = añoAcademico + '/' + (siguienteAñoAcademico.toString().slice(-2));
 
             curso_docente.textContent = fechaCurso;
+
+            const Docente = {
+                nombre: data.name,
+                observaciones: "",
+                modulos: [],
+            }
+
+            localStorage.setItem("Docente", JSON.stringify(Docente));
         })
         .catch(error => {
             console.error('Error en la solicitud:', error);
@@ -65,7 +73,13 @@ function cerrarModal() {
 
 function guardarObservacion() {
     let observacion = document.getElementById("observacion").value;
-    // Aquí puedes hacer algo con la observación, como enviarla a un servidor, etc.
+
+    let Docente = JSON.parse(localStorage.getItem("Docente"));
+
+    Docente.observaciones = observacion;
+
+    localStorage.setItem("Docente", JSON.stringify(Docente));
+
     $('#modal').modal('hide');
 }
 
@@ -361,31 +375,21 @@ function guardarDatosModulos() {
                 aula: aula.options[aula.selectedIndex].textContent
             }
 
-            let modulosStorage = JSON.parse(localStorage.getItem("Modulos")) || [];
-
-            // Asegúrate de que modulosStorage sea un array
-            if (!Array.isArray(modulosStorage)) {
-                modulosStorage = [];
-            }
+            let Docente = JSON.parse(localStorage.getItem("Docente"));
 
             let valido = true;
 
-            modulosStorage.forEach(modulo => {
+            Docente.modulos.forEach(modulo => {
                 if (datosModulo.codigo == modulo.codigo) {
                     valido = false;
                 }
             });
 
-            // Agrega los nuevos datos al array
             if (valido) {
-                modulosStorage.push(datosModulo);
+                Docente.modulos.push(datosModulo);
 
-                // Guarda el array actualizado en el almacenamiento local
-                localStorage.setItem("Modulos", JSON.stringify(modulosStorage));
+                localStorage.setItem("Docente", JSON.stringify(Docente));
             }
-
-
-            console.log(datosModulo);
         });
     });
 }
