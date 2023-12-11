@@ -138,9 +138,8 @@ function añadirModulo() {
                 </div>
     
                 <div class="form-group">
-                    <select class="form-control pricing-row aula-modulo">
-                        <option value="">Seleccione el Aula/Taller</option>
-                    </select>
+                    <input type="text" disabled class="form-control pricing-row aula-modulo"
+                    placeholder="Elige el Aula">
                 </div>
                         
                 <div class="pricing-footer">
@@ -210,12 +209,16 @@ function rellenarFormulario(datosModulos) {
         let horas_sem = moduloForm.querySelector(".horas_sem");
         let distribucion = moduloForm.querySelector(".select-distribucion");
         let curso = moduloForm.querySelector(".curso_docente");
+        let aula = moduloForm.querySelector(".aula-modulo");
+        let turno = moduloForm.querySelector(".turno_docente");
 
         const datosHTML = {
             select: select,
             codigo: codigo,
             horas_sem: horas_sem,
             distribucion: distribucion,
+            aula: aula,
+            turno: turno,
             curso: curso
         }
 
@@ -257,12 +260,17 @@ function actualizarDatos(datosHTML) {
         .then(data => {
             datosHTML.codigo.textContent = data.data.codigo;
             datosHTML.horas_sem.value = data.data.h_semanales;
+            datosHTML.turno.value = data.data.curso.turno;
+            datosHTML.curso.value = data.data.curso.nombre;
 
-            if (data.data.curso == null) {
-                datosHTML.curso.value = "No hay cursos";
-            } else {
-                datosHTML.curso.value = data.data.curso;
-            }
+            let aulasModulo;
+
+            data.data.aulas.forEach(aula => {
+                aulasModulo = aula.nombre;
+            })
+
+            datosHTML.aula.value = aulasModulo;
+            
 
             let horas_totales = document.querySelector(".horas_totales");
 
@@ -280,6 +288,8 @@ function actualizarDatos(datosHTML) {
 
                 datosHTML.distribucion.appendChild(option);
             });
+
+            console.log(data.data);
 
         })
         .catch(error => {
@@ -353,16 +363,6 @@ function sumarHorasTotales() {
 function guardarDatosModulos() {
     const modulos = document.querySelectorAll(".pricing-column-wrapper");
 
-    const opcionesNegativas = {
-        materia: "Seleccione un Modulo",
-        codigo: "___",
-        horas_sem: "Horas Semanales",
-        distribucion: "Seleccione la distribucion",
-        turno: "Elige el turno M/T",
-        curso: "Elige el Curso y el Ciclo",
-        aula: "Seleccione el Aula/Taller"
-    }
-
     modulos.forEach(modulo => {
         let btn = modulo.querySelector(".btn-modulo");
 
@@ -375,40 +375,30 @@ function guardarDatosModulos() {
             let curso = modulo.querySelector(".curso_docente");
             let aula = modulo.querySelector(".aula-modulo");
 
-            if (
-                opcionesNegativas.materia != materia &&
-                opcionesNegativas.codigo != codigo &&
-                opcionesNegativas.horas_sem != horas_sem &&
-                opcionesNegativas.distribucion != distribucion &&
-                opcionesNegativas.turno != turno &&
-                opcionesNegativas.curso != curso
-                //opcionesNegativas.aula != aula
-            ) {
-                const datosModulo = {
-                    materia: materia.options[materia.selectedIndex].textContent,
-                    codigo: codigo.textContent,
-                    horas_sem: horas_sem.value,
-                    distribucion: distribucion.options[distribucion.selectedIndex].textContent,
-                    turno: turno.value,
-                    curso: curso.value,
-                    aula: aula.options[aula.selectedIndex].textContent
+            const datosModulo = {
+                materia: materia.options[materia.selectedIndex].textContent,
+                codigo: codigo.textContent,
+                horas_sem: horas_sem.value,
+                distribucion: distribucion.options[distribucion.selectedIndex].textContent,
+                turno: turno.value,
+                curso: curso.value,
+                aula: aula.options[aula.selectedIndex].textContent
+            }
+
+            let Docente = JSON.parse(localStorage.getItem("Docente"));
+
+            let valido = true;
+
+            Docente.modulos.forEach(modulo => {
+                if (datosModulo.codigo == modulo.codigo) {
+                    valido = false;
                 }
+            });
 
-                let Docente = JSON.parse(localStorage.getItem("Docente"));
+            if (valido) {
+                Docente.modulos.push(datosModulo);
 
-                let valido = true;
-
-                Docente.modulos.forEach(modulo => {
-                    if (datosModulo.codigo == modulo.codigo) {
-                        valido = false;
-                    }
-                });
-
-                if (valido) {
-                    Docente.modulos.push(datosModulo);
-
-                    localStorage.setItem("Docente", JSON.stringify(Docente));
-                }
+                localStorage.setItem("Docente", JSON.stringify(Docente));
             }
 
         });
