@@ -12,6 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
+            $table->unsignedBigInteger('departamento');
+            $table->unsignedBigInteger('especialidad');
             $table->string('observaciones');
             $table->unsignedTinyInteger('horas_total');
             $table->string('rol');
@@ -24,6 +26,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('departamento');
+            $table->dropColumn('especialidad');
             $table->dropColumn('observaciones');
             $table->dropColumn('horas_total');
             $table->dropColumn('rol');

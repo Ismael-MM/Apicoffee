@@ -12,4 +12,9 @@ class Departamento extends Model
     protected $fillable = [
         'nombre',
     ];
+
+    public function usuario()
+    {
+        return $this->hasMany(User::class);
+    }
 }
