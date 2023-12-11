@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('aulas', function (Blueprint $table) {
-            $table->unsignedTinyInteger('horas_total');
+            $table->unsignedTinyInteger('horas_totales');
         });
     }
 
@@ -22,7 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('aulas', function (Blueprint $table) {
-            $table->dropColumn('horas_total');
+            $table->dropColumn('horas_totales');
         });
     }
 };
