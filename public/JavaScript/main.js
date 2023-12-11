@@ -87,7 +87,7 @@ function añadirModulo() {
     const modulos = document.querySelectorAll(".pricing-column-wrapper");
     let numModulos = modulos.length;
 
-    if (numModulos < 5) {
+    if (numModulos < 6) {
         let ultModulo = modulos[numModulos - 1];
 
         let numModulo = numModulos + 1;
@@ -145,7 +145,7 @@ function añadirModulo() {
                         
                 <div class="pricing-footer">
                     <div class="gem-button-container gem-button-position-center">
-                        <button type="button" class="gem-button gem-green btn-modulo">Order Now</button>
+                        <button type="button" class="gem-button gem-green btn-modulo">Guardar</button>
                     </div>
                 </div>
             </form>
