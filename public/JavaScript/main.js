@@ -293,7 +293,6 @@ function actualizarDatos(datosHTML) {
 
         })
         .catch(error => {
-            // Manejar errores, como una conexión fallida o un error en el servidor
             console.error('Error en la solicitud:', error);
         });
 

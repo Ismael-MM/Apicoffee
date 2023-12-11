@@ -88,8 +88,8 @@ class LoginRegisterController extends Controller
 
         $data['token'] = $user->createToken($request->email)->plainTextToken;
         $data['user'] = $user;
-        $data['especialidad'] = $user->especialidad()->get();
-        $data['departamento'] = $user->departamento()->get();
+        $data['especialidad'] = $user->especialidad;
+        $data['departamento'] = $user->departamento;
 
         $response = [
             'status' => 'success',
