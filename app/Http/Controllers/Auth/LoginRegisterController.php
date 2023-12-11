@@ -40,6 +40,8 @@ class LoginRegisterController extends Controller
             'password' => Hash::make($request->password),
             'rol' => $request->rol,
             'horas_total' => $request->horas_total,
+            'departamento_id' => $request->departamento_id,
+            'especialidad_id' => $request->especialidad_id,
             'observaciones' => $request->observaciones,
         ]);
 
@@ -88,8 +90,6 @@ class LoginRegisterController extends Controller
 
         $data['token'] = $user->createToken($request->email)->plainTextToken;
         $data['user'] = $user;
-        $data['especialidad'] = $user->especialidad;
-        $data['departamento'] = $user->departamento;
 
         $response = [
             'status' => 'success',

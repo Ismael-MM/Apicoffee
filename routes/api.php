@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\V1\EspecialidadController;
 use App\Http\Controllers\Api\v1\CursoController;
 use App\Http\Controllers\Api\v1\DepartamentoController;
 use App\Http\Controllers\Api\v1\AulaController;
+use App\Http\Controllers\Api\V1\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,9 +21,9 @@ use App\Http\Controllers\Api\v1\AulaController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('v1')->group(function () {
@@ -39,6 +40,9 @@ Route::middleware('auth:sanctum')->group(function () {
             return response()->json(['error' => "esa ruta no existe"],404);
         });
         Route::apiResource('departamentos', DepartamentoController::class)->missing(function (Request $request) {
+            return response()->json(['error' => "esa ruta no existe"],404);
+        });
+        Route::apiResource('usuarios', UserController::class)->missing(function (Request $request) {
             return response()->json(['error' => "esa ruta no existe"],404);
         });
     });
