@@ -41,7 +41,7 @@ class ModuloController extends Controller
                 $cursoQuery->where('turno', $turnoEspecifico);
                 })->with(['aulas' => function ($aulasQuery) {
                 $aulasQuery->select('aulas.id', 'nombre'); // Puedes seleccionar las columnas que necesitas de la tabla aulas
-                }])->get();
+                }])->paginate(6);
 
         }else {
             $modulos = Modulo::all();
