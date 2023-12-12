@@ -15,8 +15,18 @@ class AulaController extends Controller
      */
     public function index()
     {
-
-        $aulas = Aula::all();
+        if (request()->exists('aulaId')) {
+            $aulaId = request()->aulaId;
+            $aula = Aula::find($aulaId);
+            $aulas = $aula->modulos()->join('cursos', 'modulos.curso_id', '=', 'cursos.id')
+            ->where('cursos.turno','mañana')
+            ->with('user')->get();  
+            
+            return $aulas;
+           
+        }else {
+            $aulas = Aula::all();
+        }
         return AulaResource::collection($aulas);
     }
 
