@@ -14,7 +14,17 @@ class UserController extends Controller
      */
     public function index()
     {
-        $usuarios = User::all();
+
+        if (request()->exists('departamento')) {
+            $departamento = request()->departamento;
+
+            $usuarios = User::whereHas('departamento', function ($query) use ($departamento) {
+                $query->where('nombre', '=', $departamento);
+            })->get();
+            // $modulos = Modulo::where('especialidad_id', '=', request()->especialidad)->get();
+        }else {
+            $usuarios = User::all();
+        }
 
         // Devuelve una respuesta JSON con los registros de módulo y un mensaje de éxito.
         return UserResource::collection($usuarios);
