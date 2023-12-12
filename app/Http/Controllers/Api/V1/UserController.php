@@ -17,11 +17,13 @@ class UserController extends Controller
 
         if (request()->exists('departamento')) {
             $departamento = request()->departamento;
-
-            $usuarios = User::whereHas('departamento', function ($query) use ($departamento) {
-                $query->where('nombre', '=', $departamento);
-            })->get();
-            // $modulos = Modulo::where('especialidad_id', '=', request()->especialidad)->get();
+            if (is_numeric($departamento)) {
+                $usuarios = User::where('departamento_id', '=', request()->departamento)->get();
+            }else {
+                $usuarios = User::whereHas('departamento', function ($query) use ($departamento) {
+                    $query->where('nombre', '=', $departamento);
+                })->get();
+            }
         }else {
             $usuarios = User::all();
         }

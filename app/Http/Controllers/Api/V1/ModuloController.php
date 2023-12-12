@@ -17,12 +17,13 @@ class ModuloController extends Controller
     {
         // Obtén todos los registros de módulo desde la base de datos utilizando el modelo 'Modulo'.
         if (request()->exists('especialidad')) {
-            $nombreEspecialidad = request()->especialidad;
-
-            $modulos = Modulo::whereHas('especialidad', function ($query) use ($nombreEspecialidad) {
-                $query->where('nombre', '=', $nombreEspecialidad);
+            $Especialidad = request()->especialidad;
+            if (is_numeric($Especialidad)) {
+                $modulos = Modulo::where('especialidad_id', '=', request()->especialidad)->get();
+            }
+            $modulos = Modulo::whereHas('especialidad', function ($query) use ($Especialidad) {
+                $query->where('nombre', '=', $Especialidad);
             })->get();
-            // $modulos = Modulo::where('especialidad_id', '=', request()->especialidad)->get();
         }else {
             $modulos = Modulo::all();
         }
