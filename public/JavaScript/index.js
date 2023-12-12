@@ -17,7 +17,7 @@ document.getElementById('loginForm').addEventListener('submit', function (event)
                 console.log('Token received:', data.data.token);
                 localStorage.setItem('token', data.data.token);
 
-                window.location.href = `/docente`;
+                window.location.href = '/docente';
             }
         })
         .catch(error => {

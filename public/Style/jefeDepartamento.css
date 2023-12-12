@@ -1,0 +1,13 @@
+body {
+    background-color: #31393c;
+    color: white;
+}
+
+.user-table {
+    margin-top: 20px;
+    color: white;
+}
+
+.badge {
+    margin-right: 4px;
+}

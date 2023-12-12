@@ -1,6 +1,7 @@
 const ampliarModulos = document.querySelector(".btn-modulo");
 const añadirObservacion = document.querySelector(".btn-observacion");
 const tokenDocente = localStorage.getItem("token");
+let docenteSesion;
 let modulosDocente;
 
 ampliarModulos.addEventListener("click", añadirModulo);
@@ -10,7 +11,7 @@ cogerDatosModulos();
 datosDocente();
 guardarDatosModulos();
 
-function datosDocente() {
+async function datosDocente() {
     let nombre_docente = document.querySelector(".nombre_docente");
     let departamento_docente = document.querySelector(".departamento_docente");
     let curso_docente = document.querySelector(".curso_docente");
@@ -31,7 +32,8 @@ function datosDocente() {
         })
         .then(data => {
             console.log('Información del user:', data);
-            nombre_docente.textContent = data.name;
+
+            docenteSesion = data;
 
             let fechaActual = new Date();
             let mesActual = fechaActual.getMonth() + 1;
@@ -59,6 +61,33 @@ function datosDocente() {
         })
         .catch(error => {
             console.error('Error en la solicitud:', error);
+        });
+
+    fetch('/api/v1/usuarios', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${tokenDocente}`
+        },
+    })
+        .then(response => response.json())
+        .then(data => {
+
+            console.log(data.data);
+
+            data.data.forEach(docente => {
+                console.log(docente);
+                if (docenteSesion.id == docente.id) {
+                    console.log("entra");
+                    nombre_docente.textContent = docente.name;
+                    especialidad_docente.textContent = docente.especialidad.nombre;
+                    departamento_docente.textContent = docente.departamento.nombre;
+                }
+            })
+
+        })
+        .catch(error => {
+            console.error('Error:', error);
         });
 }
 
@@ -114,7 +143,7 @@ function añadirModulo() {
             </div>
             <form action="" class="form">
                 <div class="form-group">
-                    <input type="text" class="form-control pricing-row turno_docente" placeholder="Elige el turno M/T">
+                    <input type="text" disabled class="form-control pricing-row turno_docente" placeholder="Elige el turno M/T">
                 </div>
                         
                 <div class="form-group">
@@ -270,7 +299,7 @@ function actualizarDatos(datosHTML) {
             })
 
             datosHTML.aula.value = aulasModulo;
-            
+
 
             let horas_totales = document.querySelector(".horas_totales");
 
