@@ -13,11 +13,11 @@ class CursosSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('especialidads')->insert([
+        DB::table('cursos')->insert([
             'nombre' => '1º educacion infantil',
             'turno' => 'tarde',
         ]);
-        DB::table('especialidads')->insert([
+        DB::table('cursos')->insert([
             'nombre' => '2º peluqeria y estetica',
             'turno' => 'mañana',
         ]);
