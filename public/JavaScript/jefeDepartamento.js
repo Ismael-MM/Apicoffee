@@ -4,7 +4,6 @@ let jefeDepartamento;
 let datosDocentesDepartamento = [];
 
 datos();
-//rellenarTabla();
 
 async function cogerJefeDepartamento() {
     try {
