@@ -39,7 +39,7 @@ async function datosDocente() {
             let mesActual = fechaActual.getMonth() + 1;
             let añoAcademico;
 
-            if (mesActual >= 7) {
+            if (mesActual >= 9) {
                 añoAcademico = fechaActual.getFullYear();
             } else {
                 añoAcademico = fechaActual.getFullYear() - 1;

@@ -1,4 +1,3 @@
-let docentesModulos = [];
 const tokenDocente = localStorage.getItem("token");
 let jefeDepartamento;
 let datosDocentesDepartamento = [];
@@ -20,7 +19,6 @@ async function cogerJefeDepartamento() {
         }
 
         const data = await response.json();
-        console.log('Información del user:', data);
         return data;
     } catch (error) {
         console.error('Error en la solicitud:', error);
@@ -31,7 +29,6 @@ async function cogerJefeDepartamento() {
 async function datos() {
     try {
         jefeDepartamento = await cogerJefeDepartamento();
-        console.log(jefeDepartamento);
         await cogerDatosDocentesDepartamento();
     } catch (error) {
         console.error('Error al obtener datos:', error);
@@ -43,8 +40,6 @@ async function datos() {
 }
 
 async function cogerDatosDocentesDepartamento() {
-    console.log(jefeDepartamento);
-
     try {
         console.log(jefeDepartamento);
 
@@ -61,22 +56,26 @@ async function cogerDatosDocentesDepartamento() {
         }
 
         const data = await response.json();
-        console.log('Información del user:', data);
 
         data.data.forEach(docenteDepartamento => {
             datosDocentesDepartamento.push(docenteDepartamento);
         });
-
-        console.log(datosDocentesDepartamento);
     } catch (error) {
         console.error('Error en la solicitud:', error);
     }
 
-    console.log(datosDocentesDepartamento);
 }
 
 async function cogerDatosModulosDocentes(docente) {
-    fetch(`/api/v1/modulos`, {
+    let docentesModulos = [];
+
+    const horasDocentes = {
+        horas: 0,
+        name: docente.name,
+        id: docente.id
+    }
+
+    fetch(`/api/v1/modulos?usuario=${docente.id}`, {
         method: 'GET',
         headers: {
             'Accept': 'application/json',
@@ -90,14 +89,18 @@ async function cogerDatosModulosDocentes(docente) {
             return response.json();
         })
         .then(data => {
-            console.log("Modulos de un usuario", data.data);
             data.data.forEach(data => {
-                if (data.user_id == docente.id) {
-                    docentesModulos.push(data);
-                }
-            });
+                docentesModulos.push(data);
 
-            crearUser(docente);
+                horasDocentes.horas += data.h_semanales;
+
+                console.log(horasDocentes);
+            });
+            
+            horasDocentes.name = docente.name;
+            horasDocentes.id = docente.id;
+
+            crearUser(docente, docentesModulos, horasDocentes);
 
         })
         .catch(error => {
@@ -105,7 +108,7 @@ async function cogerDatosModulosDocentes(docente) {
         });
 }
 
-function crearUser(docente) {
+function crearUser(docente, docentesModulos, horasDocentes) {
     let user = document.createElement("tr");
     let nombreUser = document.createElement("td");
     let modulosUser = document.createElement("td");
@@ -113,7 +116,8 @@ function crearUser(docente) {
 
     let horasText = document.createElement("h5");
     horasText.classList.add("text-center", "text-white")
-    horasText.textContent = docente.horas_total;
+
+    horasText.textContent = horasDocentes.horas;
 
     let userText = document.createElement("h5");
     userText.classList.add("text-center", "text-white")
@@ -126,11 +130,9 @@ function crearUser(docente) {
     docentesModulos.forEach(modulo => {
         let span = document.createElement("span");
         span.textContent = modulo.codigo.toUpperCase();
-        span.classList.add("badge", "badge-secondary", "p-2", "pr-3", "pl-3", "mr-2", "ml-2");
+        span.classList.add("badge", "p-2", "pr-3", "pl-3", "mr-2", "ml-2");
         modulosUser.appendChild(span);
     });
-
-    docentesModulos = [];
 
     nombreUser.appendChild(userText);
     user.appendChild(nombreUser);
