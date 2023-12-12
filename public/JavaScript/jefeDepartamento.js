@@ -1,10 +1,11 @@
-const docentesDepartamento = [];
+const docentesModulos = [];
 const tokenDocente = localStorage.getItem("token");
 let jefeDepartamento;
 
+
 rellenarTabla();
 
-async function rellenarTabla() {
+async function cogerJefeDepartamento() {
     fetch(`/api/user`, {
         method: 'GET',
         headers: {
@@ -26,7 +27,9 @@ async function rellenarTabla() {
         .catch(error => {
             console.error('Error en la solicitud:', error);
         });
+}
 
+async function cogerModulos() {
     fetch('/api/v1/usuarios', {
         method: 'GET',
         headers: {
@@ -49,6 +52,12 @@ async function rellenarTabla() {
         });
 }
 
+async function rellenarTabla() {
+    cogerJefeDepartamento();
+
+    cogerModulos();
+}
+
 async function cogerDatosModulosDocentes(docente) {
     fetch(`/api/v1/modulos`, {
         method: 'GET',
@@ -67,9 +76,11 @@ async function cogerDatosModulosDocentes(docente) {
             console.log("Modulos de un usuario", data.data);
             data.data.forEach(data => {
                 if (data.user_id == docente.id) {
-                    crearTr(data);
+                    docentesModulos.push(data); 
                 }
             });
+
+            crearUser(docente);
 
         })
         .catch(error => {
@@ -77,45 +88,41 @@ async function cogerDatosModulosDocentes(docente) {
         });
 }
 
-function crearTr(data) {
-    let modulosUserTotal = [data.codigo];
+function crearUser(docente) {
+    console.log("entra");
 
-    // Crear elementos y agregarlos a la tabla aquí
+    console.log(docentesModulos)
+
     let user = document.createElement("tr");
     let nombreUser = document.createElement("td");
     let modulosUser = document.createElement("td");
     let distribucionHorasUser = document.createElement("td");
 
-    // Configurar el contenido de los elementos
-    nombreUser.textContent = docente.name; // Puedes cambiar esto según tus necesidades
+    nombreUser.textContent = docente.name;
 
-    // Configurar el input disabled con la cantidad de horas
     let horasInput = document.createElement("input");
     horasInput.type = "number";
     horasInput.className = "form-control";
     horasInput.disabled = true;
-    horasInput.value = docente.horas_total; // Puedes cambiar esto según tus necesidades
+    horasInput.value = docente.horas_total;
 
-    // Agregar clases a los elementos
     nombreUser.classList.add("col-sm-3", "col-md-3", "text-center");
     modulosUser.classList.add("col-sm-6", "col-md-6", "text-center");
     distribucionHorasUser.classList.add("col-sm-3", "col-md-3", "text-center");
 
-    // Agregar elementos al tr
     user.appendChild(nombreUser);
 
-    // Agregar spans al td de módulos
-    modulosUserTotal.forEach(modulo => {
+    docentesModulos.forEach(modulo => {
         let span = document.createElement("span");
-        span.textContent = modulo;
-        span.classList.add("badge", "badge-secondary");
+        span.textContent = modulo.codigo;
+        span.classList.add("badge", "badge-secondary", "p-2");
         modulosUser.appendChild(span);
     });
 
     user.appendChild(modulosUser);
     user.appendChild(distribucionHorasUser);
 
-    // Agregar el tr al tbody
-    console.log(document.querySelector("tbody"))
     document.querySelector("tbody").appendChild(user);
+
+    console.log(user);
 }
