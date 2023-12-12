@@ -56,6 +56,8 @@ class AulaController extends Controller
     {
         $aula->update([
             'nombre' => $request->nombre,
+            'horas_m' => $request->horas_m,
+            'horas_t' => $request->horas_t,
         ]);
 
         return new AulaResource($aula);
