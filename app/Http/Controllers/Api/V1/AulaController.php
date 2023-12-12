@@ -15,15 +15,17 @@ class AulaController extends Controller
      */
     public function index()
     {
-        if (request()->exists('aulaId')) {
+        if (request()->exists('aulaId') && request()->exists('turno')) {
             $aulaId = request()->aulaId;
+            $turno = request()->turno;
+
             $aula = Aula::find($aulaId);
             $aulas = $aula->modulos()->join('cursos', 'modulos.curso_id', '=', 'cursos.id')
-            ->where('cursos.turno','mañana')
+            ->where('cursos.turno',$turno)
             ->with('user')->get();  
             
             return $aulas;
-           
+
         }else {
             $aulas = Aula::all();
         }
