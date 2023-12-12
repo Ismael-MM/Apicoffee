@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
             ModulosSeeder::class,
             DepartamentoSeeder::class,
             AulasSeeder::class,
+            UserSeeder::class,
         ]);
     }
 }
