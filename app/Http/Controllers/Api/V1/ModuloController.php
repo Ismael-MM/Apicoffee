@@ -20,10 +20,20 @@ class ModuloController extends Controller
             $Especialidad = request()->especialidad;
             if (is_numeric($Especialidad)) {
                 $modulos = Modulo::where('especialidad_id', '=', request()->especialidad)->get();
+            }else {
+                $modulos = Modulo::whereHas('especialidad', function ($query) use ($Especialidad) {
+                    $query->where('nombre', '=', $Especialidad);
+                })->get();
             }
-            $modulos = Modulo::whereHas('especialidad', function ($query) use ($Especialidad) {
-                $query->where('nombre', '=', $Especialidad);
-            })->get();
+        }else if (request()->exists('usuario')) {
+            $usuario = request()->usuario;
+            if (is_numeric($usuario)) {
+                $modulos = Modulo::where('user_id', '=', request()->usuario)->get();
+            }else {
+                $modulos = Modulo::whereHas('user', function ($query) use ($usuario) {
+                    $query->where('name', '=', $usuario);
+                })->get();
+            }
         }else {
             $modulos = Modulo::all();
         }
