@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Resources\UserResource;
 
 class UserController extends Controller
 {
@@ -13,7 +14,10 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        $usuarios = User::all();
+
+        // Devuelve una respuesta JSON con los registros de módulo y un mensaje de éxito.
+        return UserResource::collection($usuarios);
     }
 
     /**
@@ -29,7 +33,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        //
+        return new UserResource ($user);
     }
 
     /**
@@ -45,6 +49,9 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        $user->delete();
+
+        // Devuelve una respuesta JSON con un mensaje de éxito.
+        return new UserResource ($user);
     }
 }

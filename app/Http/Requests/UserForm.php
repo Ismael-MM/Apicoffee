@@ -29,7 +29,7 @@ class UserForm extends FormRequest
             'horas_total' => 'required|integer',
             'departamento_id' => 'required|integer',
             'especialidad_id' => 'required|integer',
-            'observaciones' => $request->observaciones,
+            'observaciones' => 'required|string|max:250',
         ];
     }
 }
