@@ -34,6 +34,15 @@ class ModuloController extends Controller
                     $query->where('name', '=', $usuario);
                 })->get();
             }
+        }else if (request()->exists('turno')) {
+            $turnoEspecifico = request()->turno;
+
+            $modulos = Modulo::whereHas('curso', function ($cursoQuery) use ($turnoEspecifico) {
+                $cursoQuery->where('turno', $turnoEspecifico);
+                })->with(['aulas' => function ($aulasQuery) {
+                $aulasQuery->select('aulas.id', 'nombre'); // Puedes seleccionar las columnas que necesitas de la tabla aulas
+                }])->get();
+
         }else {
             $modulos = Modulo::all();
         }

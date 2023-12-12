@@ -15,6 +15,7 @@ class AulaController extends Controller
      */
     public function index()
     {
+
         $aulas = Aula::all();
         return AulaResource::collection($aulas);
     }
