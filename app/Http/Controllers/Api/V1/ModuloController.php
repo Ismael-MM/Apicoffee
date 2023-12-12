@@ -16,7 +16,16 @@ class ModuloController extends Controller
     public function index()
     {
         // Obtén todos los registros de módulo desde la base de datos utilizando el modelo 'Modulo'.
-        $modulos = Modulo::all();
+        if (request()->exists('especialidad')) {
+            $nombreEspecialidad = request()->especialidad;
+
+            $modulos = Modulo::whereHas('especialidad', function ($query) use ($nombreEspecialidad) {
+                $query->where('nombre', '=', $nombreEspecialidad);
+            })->get();
+            // $modulos = Modulo::where('especialidad_id', '=', request()->especialidad)->get();
+        }else {
+            $modulos = Modulo::all();
+        }
 
         // Devuelve una respuesta JSON con los registros de módulo y un mensaje de éxito.
         return ModuloResource::collection($modulos);
