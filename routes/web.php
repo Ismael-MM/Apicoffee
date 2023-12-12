@@ -25,8 +25,8 @@ Route::get('/docente', function () {
     return response()->file($pathToFile);
 })->name('formulario');
 
-Route::get('/jefatura', function () {
-    $pathToFile = public_path('html/jefatura.html');
+Route::get('/jefatura/departamentos', function () {
+    $pathToFile = public_path('html/jefaturaDepartamento.html');
     return response()->file($pathToFile);
 });
 
@@ -37,6 +37,16 @@ Route::get('/dashboard', function () {
 
 Route::get('/jefeDepartamento', function () {
     $pathToFile = public_path('html/jefeDepartamento.html');
+    return response()->file($pathToFile);
+});
+
+Route::get('/jefatura', function () {
+    $pathToFile = public_path('html/jefatura.html');
+    return response()->file($pathToFile);
+});
+
+Route::get('/jefatura/aulas', function () {
+    $pathToFile = public_path('html/jefaturaAula.html');
     return response()->file($pathToFile);
 });
 

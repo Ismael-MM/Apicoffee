@@ -38,4 +38,30 @@ function limpiarArray(array) {
     return options;
 }
 
-console.log(limpiarArray(todasLasSumas));
+//console.log(limpiarArray(todasLasSumas));
+
+function probarBucles() {
+    let array1 = [];
+    let array2 = [];
+
+    array1.length = 40;
+    array2.length = 320;
+
+    for(let i = 1; i <= array1.length; i++) {
+        array1[i - 1] = i;
+    }
+
+    for(let i = 1; i <= array2.length; i++) {
+        array2[i - 1] = i;
+    }
+
+    array1.forEach(e1 => {
+        array2.forEach(e2 => {
+            console.log(e1 + e2);
+        })
+    })
+
+    console.log("FINAL")
+}
+
+//probarBucles();
