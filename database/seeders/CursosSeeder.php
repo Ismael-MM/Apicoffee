@@ -21,5 +21,9 @@ class CursosSeeder extends Seeder
             'nombre' => '2º peluqeria y estetica',
             'turno' => 'mañana',
         ]);
+        DB::table('cursos')->insert([
+            'nombre' => '1º DAW',
+            'turno' => 'mañana',
+        ]);
     }
 }
