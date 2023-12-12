@@ -15,7 +15,7 @@ class ModulosSeeder extends Seeder
     {
         DB::table('modulos')->insert([
             'codigo' => 'dew',
-            'materia' => 'nombre1',
+            'materia' => 'Desarrollo de aplicaciones servidor',
             'h_semanales' => 15,
             'h_totales' => 100,
             'user_id' => 1,
@@ -24,7 +24,7 @@ class ModulosSeeder extends Seeder
         ]);
         DB::table('modulos')->insert([
             'codigo' => 'dsw',
-            'materia' => 'nombre2',
+            'materia' => 'Desarrollo de aplicaciones cliente',
             'h_semanales' => 8,
             'h_totales' => 100,
             'user_id' => 1,
@@ -33,7 +33,7 @@ class ModulosSeeder extends Seeder
         ]);
         DB::table('modulos')->insert([
             'codigo' => 'dpl',
-            'materia' => 'nombre3',
+            'materia' => 'Cosas de poner en marcha todo',
             'h_semanales' => 10,
             'h_totales' => 100,
             'user_id' => 1,
