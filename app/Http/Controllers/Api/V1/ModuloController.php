@@ -87,7 +87,7 @@ class ModuloController extends Controller
             'materia' => $request->materia,
             'h_semanales' => $request->h_semanales,
             'h_totales' => $request->h_totales,
-            'user_id' => auth()->user()->id,
+            'user_id' => $request->user_id,
             'especialidad_id' => $request->especialidad_id,
             'curso_id' => $request->curso_id,
         ]);
