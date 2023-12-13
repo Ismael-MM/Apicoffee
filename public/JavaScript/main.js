@@ -435,8 +435,51 @@ function guardarDatosModulos() {
 
 /* ENVIO DE DATOS AL BACK-END PARA LOS UPDATE */
 
-async function enviarDatosFormulario() {
+enviarDatosFormulario();
 
+async function enviarDatosFormulario() {
+    const modulos = document.querySelectorAll(".pricing-column-wrapper");
+
+    const btn_guardarTodo = document.querySelector(".btn-guardarTodo");
+
+    btn_guardarTodo.addEventListener("click", () => {
+        /* RECORRER CADA MODULO Y OBTENER SUS DATOS */
+        modulos.forEach(modulo => {
+            getDataModulo(modulo);
+        })
+    })
+}
+
+async function getDataModulo(modulo) {
+    let select = modulo.querySelector(".select-modulo");
+
+    const datosHTMLUser = {
+        user_id: docenteSesion.id,
+        update: 1
+    }
+
+    let moduloSeleccionado = await seleccionarModulo(select);
+
+    const formData = new URLSearchParams();
+
+    for (const key in datosHTMLUser) {
+        formData.append(key, encodeURIComponent(datosHTMLUser[key]));
+    }
+
+    try {
+        await fetch(`/api/v1/modulos/${moduloSeleccionado.id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': `Bearer ${tokenDocente}`
+            },
+            body: formData,
+        });
+
+        console.log('Datos actualizados exitosamente');
+    } catch (error) {
+        console.error('Error en la solicitud:', error.message);
+    }
 }
 
 cogerDatosModuloParaEnviar();
@@ -456,11 +499,6 @@ async function cogerDatosModuloParaEnviar() {
         btn_modulo.addEventListener("click", async () => {
             try {
                 let select = modulo.querySelector(".select-modulo");
-                let codigo = modulo.querySelector(".pricing_row_title");
-                let horas_sem = modulo.querySelector(".horas_sem");
-                let curso = modulo.querySelector(".curso_docente");
-                let especialidad = document.querySelector(".especialidad_docente");
-                let horas_total = document.querySelector(".horas_totales");
 
                 const datosHTMLUser = {
                     user_id: docenteSesion.id,

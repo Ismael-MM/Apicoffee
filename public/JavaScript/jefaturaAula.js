@@ -60,7 +60,7 @@ async function cogerAulas(page) {
 
         console.log(aulas);
 
-        aulas.sort((a, b) => parseInt(a.nombre) - parseInt(b.nombre));
+        //aulas.sort((a, b) => parseInt(a.nombre) - parseInt(b.nombre));
 
     } catch (error) {
         console.error('Error:', error.message);
@@ -105,7 +105,7 @@ function crearCardAulas() {
 
         cont++;
 
-        if(cont == 3) {
+        if (cont == 3) {
             cont = 0;
             rowActual++;
         }
@@ -142,16 +142,23 @@ function crearBotonesPaginacion() {
 
     console.log(currentPage);
 
+    function onBtnClick() {
+        cargarPagina(currentPage + (this === btn_anterior ? -1 : 1));
+
+        btn_anterior.removeEventListener("click", onBtnClick);
+        btn_siguiente.removeEventListener("click", onBtnClick);
+    }
+
     if (links.prev) {
         btn_anterior.disabled = false;
-        btn_anterior.addEventListener("click", () => cargarPagina((currentPage - 1)), { once: true });
+        btn_anterior.addEventListener("click", onBtnClick, { once: true });
     } else {
         btn_anterior.disabled = true;
     }
 
     if (links.next) {
         btn_siguiente.disabled = false;
-        btn_siguiente.addEventListener("click", () => cargarPagina((currentPage + 1)), { once: true });
+        btn_siguiente.addEventListener("click", onBtnClick, { once: true });
     } else {
         btn_siguiente.disabled = true;
     }

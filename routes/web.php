@@ -50,3 +50,10 @@ Route::get('/jefatura/aulas', function () {
     return response()->file($pathToFile);
 });
 
+/*
+Route::get('/jefatura/departamentos', function () {
+    $pathToFile = public_path('html/jefaturaAula.html');
+    return response()->file($pathToFile);
+});
+*/
+

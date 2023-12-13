@@ -3,6 +3,10 @@ let departamentos;
 let links;
 
 irAPaginaPrimera();
+document.addEventListener("DOMContentLoaded", () => {
+    informacionDepartamento();
+})
+
 
 async function cogerDepartamentos(page) {
     try {
@@ -27,7 +31,6 @@ async function cogerDepartamentos(page) {
         console.error('Error:', error.message);
     }
 }
-
 
 function crearCardDepartamentos() {
     let row1 = [3, 3, 4];
@@ -106,18 +109,42 @@ function crearBotonesPaginacion() {
 
     console.log(currentPage);
 
+    function onBtnClick() {
+        cargarPagina(currentPage + (this === btn_anterior ? -1 : 1));
+
+        btn_anterior.removeEventListener("click", onBtnClick);
+        btn_siguiente.removeEventListener("click", onBtnClick);
+    }
+
     if (links.prev) {
         btn_anterior.disabled = false;
-        btn_anterior.addEventListener("click", () => cargarPagina((currentPage - 1)), { once: true });
+        btn_anterior.addEventListener("click", onBtnClick, { once: true });
     } else {
         btn_anterior.disabled = true;
     }
 
     if (links.next) {
         btn_siguiente.disabled = false;
-        btn_siguiente.addEventListener("click", () => cargarPagina((currentPage + 1)), { once: true });
+        btn_siguiente.addEventListener("click", onBtnClick, { once: true });
     } else {
         btn_siguiente.disabled = true;
     }
 }
 
+function informacionDepartamento() {
+    const departamentos = document.querySelectorAll(".card-body");
+
+    console.log(departamentos);
+
+    departamentos.forEach(departamento => {
+        let nombre = departamento.querySelector(".card-title");
+        let btn_departamento = departamento.querySelector(".btn-more");
+
+        console.log(nombre);
+        console.log(btn_departamento);
+
+        btn_departamento.addEventListener("click", () => {
+            window.location.href = `/jefatura/departamentos/${nombre}`;
+        })
+    })
+}
