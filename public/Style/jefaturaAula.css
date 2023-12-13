@@ -25,5 +25,6 @@ body {
 }
 
 .btn-atras {
-
+    font-size: 50px !important;
+    font-weight: 600 !important;
 }

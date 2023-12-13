@@ -444,16 +444,28 @@ cogerDatosModuloParaEnviar();
 async function cogerDatosModuloParaEnviar() {
     const modulos = document.querySelectorAll(".pricing-column-wrapper");
 
+    let btn_modulos = document.querySelector(".btn-guardarTodo");
+
+    btn_modulos.addEventListener("click", async () => {
+
+    });
+
     modulos.forEach(modulo => {
-        let btn = modulo.querySelector(".btn-modulo");
+        let btn_modulo = modulo.querySelector(".btn-modulo");
 
-        btn.addEventListener("click", async () => {
+        btn_modulo.addEventListener("click", async () => {
             try {
-                const datosActualizar = {
-                    user_id: docenteSesion.id
-                };
-
                 let select = modulo.querySelector(".select-modulo");
+                let codigo = modulo.querySelector(".pricing_row_title");
+                let horas_sem = modulo.querySelector(".horas_sem");
+                let curso = modulo.querySelector(".curso_docente");
+                let especialidad = document.querySelector(".especialidad_docente");
+                let horas_total = document.querySelector(".horas_totales");
+
+                const datosHTMLUser = {
+                    user_id: docenteSesion.id,
+                    update: 1
+                }
 
                 let moduloSeleccionado = await seleccionarModulo(select);
 
@@ -461,29 +473,25 @@ async function cogerDatosModuloParaEnviar() {
 
                 const formData = new URLSearchParams();
 
-                for (const key in datosActualizar) {
-                    formData.append(key, encodeURIComponent(datosActualizar[key]));
+                for (const key in datosHTMLUser) {
+                    formData.append(key, encodeURIComponent(datosHTMLUser[key]));
                 }
-            
 
-                // Realizar la solicitud fetch con el método PUT y encabezados adecuados
                 try {
                     await fetch(`/api/v1/modulos/${moduloSeleccionado.id}`, {
                         method: 'PUT',
                         headers: {
                             'Content-Type': 'application/x-www-form-urlencoded',
                             'Authorization': `Bearer ${tokenDocente}`
-                            // Puedes incluir otros encabezados según sea necesario, como tokens de autenticación
                         },
                         body: formData,
                     });
-                
+
                     console.log('Datos actualizados exitosamente');
                 } catch (error) {
-                    // Aquí puedes manejar errores en la solicitud
                     console.error('Error en la solicitud:', error.message);
                 }
-                
+
             } catch (error) {
                 console.error('Error:', error.message);
             }

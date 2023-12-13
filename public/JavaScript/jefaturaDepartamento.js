@@ -1,11 +1,12 @@
 const tokenDocente = localStorage.getItem("token");
 let departamentos;
+let links;
 
-rellenarPagina();
+irAPaginaPrimera();
 
-async function cogerDepartamentos() {
+async function cogerDepartamentos(page) {
     try {
-        const response = await fetch('/api/v1/departamentos', {
+        const response = await fetch(`/api/v1/departamentos?page=${page}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -19,6 +20,7 @@ async function cogerDepartamentos() {
 
         const data = await response.json();
         console.log(data.data);
+        links = data.links;
 
         departamentos = data.data;
     } catch (error) {
@@ -34,6 +36,8 @@ function crearCardDepartamentos() {
     let rowActual = 0;
 
     let container = document.querySelector(".container");
+
+    container.innerHTML = '';
 
     let cont = 0;
     let currentRow;
@@ -72,12 +76,48 @@ function crearCardDepartamentos() {
     });
 }
 
-async function rellenarPagina() {
+async function rellenarPagina(currentPage) {
     try {
-        await cogerDepartamentos();  // Esperar a que cogerDepartamentos termine
-        crearCardDepartamentos();    // Llamar a crearCardDepartamentos después de cogerDepartamentos
+        await cogerDepartamentos(currentPage);  // Esperar a que cogerAulas termine
+
+        crearCardDepartamentos();    // Llamar a crearCardAulas después de cogerAulas
+        crearBotonesPaginacion();  // Crear botones de paginación
     } catch (error) {
         console.error("Error al rellenar la página:", error);
+    }
+}
+
+function irAPaginaPrimera() {
+    currentPage = 1;
+    cargarPagina(currentPage);
+}
+
+function cargarPagina(page) {
+    console.log(`Ir a la pagina ${page}`);
+    currentPage = page;
+    rellenarPagina(currentPage);
+}
+
+function crearBotonesPaginacion() {
+    let btn_anterior = document.querySelector(".btn-anterior");
+    let btn_siguiente = document.querySelector(".btn-siguiente");
+
+    console.log(links);
+
+    console.log(currentPage);
+
+    if (links.prev) {
+        btn_anterior.disabled = false;
+        btn_anterior.addEventListener("click", () => cargarPagina((currentPage - 1)), { once: true });
+    } else {
+        btn_anterior.disabled = true;
+    }
+
+    if (links.next) {
+        btn_siguiente.disabled = false;
+        btn_siguiente.addEventListener("click", () => cargarPagina((currentPage + 1)), { once: true });
+    } else {
+        btn_siguiente.disabled = true;
     }
 }
 
