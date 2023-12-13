@@ -77,20 +77,26 @@ class ModuloController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(ModuloForm $request, Modulo $modulo)
+    public function update(Request $request, Modulo $modulo)
     {
         // Valida los datos del formulario enviado por la aplicación cliente.
 
         // Actualiza el registro de módulo en la base de datos.
-        $modulo->update([
-            'codigo' => $request->codigo,
-            'materia' => $request->materia,
-            'h_semanales' => $request->h_semanales,
-            'h_totales' => $request->h_totales,
-            'user_id' => $request->user_id,
-            'especialidad_id' => $request->especialidad_id,
-            'curso_id' => $request->curso_id,
-        ]);
+        if (Request()->update != null) {
+            $modulo->update([
+                'user_id' => $request->user_id,
+            ]);
+        }else {
+            $modulo->update([
+                'codigo' => $request->codigo,
+                'materia' => $request->materia,
+                'h_semanales' => $request->h_semanales,
+                'h_totales' => $request->h_totales,
+                'user_id' => $request->user_id,
+                'especialidad_id' => $request->especialidad_id,
+                'curso_id' => $request->curso_id,
+            ]);
+        }
 
         // Devuelve una respuesta JSON con el registro de módulo actualizado y un mensaje de éxito.
         return new ModuloResource ($modulo);
