@@ -9,7 +9,7 @@ añadirObservacion.addEventListener("click", añadirObservacionDocente);
 
 cogerDatosModulos();
 datosDocente();
-guardarDatosModulos();
+//guardarDatosModulos();
 
 async function datosDocente() {
     let nombre_docente = document.querySelector(".nombre_docente");
@@ -439,32 +439,82 @@ async function enviarDatosFormulario() {
 
 }
 
+cogerDatosModuloParaEnviar();
+
 async function cogerDatosModuloParaEnviar() {
     const modulos = document.querySelectorAll(".pricing-column-wrapper");
 
     modulos.forEach(modulo => {
         let btn = modulo.querySelector(".btn-modulo");
 
-        btn.addEventListener("click", () => {
-            let materia = modulo.querySelector(".select-modulo");
-            let codigo = modulo.querySelector(".pricing_row_title");
-            let horas_sem = modulo.querySelector(".horas_sem");
-            let distribucion = modulo.querySelector(".select-distribucion");
-            let turno = modulo.querySelector(".turno_docente");
-            let curso = modulo.querySelector(".curso_docente");
-            let aula = modulo.querySelector(".aula-modulo");
+        btn.addEventListener("click", async () => {
+            try {
+                const datosActualizar = {
+                    user_id: docenteSesion.id
+                };
 
-            const datosModulo = {
-                materia: materia.options[materia.selectedIndex].textContent,
-                codigo: codigo.textContent,
-                horas_sem: horas_sem.value,
-                distribucion: distribucion.options[distribucion.selectedIndex].textContent,
-                turno: turno.value,
-                curso: curso.value,
-                aula: aula.options[aula.selectedIndex].textContent
-            }
+                let select = modulo.querySelector(".select-modulo");
 
+                let moduloSeleccionado = await seleccionarModulo(select);
+
+                console.log(moduloSeleccionado);
+
+                const formData = new URLSearchParams();
+
+                for (const key in datosActualizar) {
+                    formData.append(key, encodeURIComponent(datosActualizar[key]));
+                }
             
+
+                // Realizar la solicitud fetch con el método PUT y encabezados adecuados
+                try {
+                    await fetch(`/api/v1/modulos/${moduloSeleccionado.id}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                            'Authorization': `Bearer ${tokenDocente}`
+                            // Puedes incluir otros encabezados según sea necesario, como tokens de autenticación
+                        },
+                        body: formData,
+                    });
+                
+                    console.log('Datos actualizados exitosamente');
+                } catch (error) {
+                    // Aquí puedes manejar errores en la solicitud
+                    console.error('Error en la solicitud:', error.message);
+                }
+                
+            } catch (error) {
+                console.error('Error:', error.message);
+            }
         });
     });
+}
+
+async function seleccionarModulo(select) {
+    try {
+        const response = await fetch(`/api/v1/modulos/${select.value}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${tokenDocente}`
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error en la solicitud: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log(data);
+
+        // Utiliza find para encontrar el módulo deseado
+        const moduloData = data.data;
+
+        //console.log(moduloData);
+
+        return moduloData;
+    } catch (error) {
+        console.error('Error:', error.message);
+    }
 }

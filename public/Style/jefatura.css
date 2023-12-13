@@ -1,0 +1,17 @@
+body {
+    background-color: #31393c !important;
+}
+
+html {
+    background-color: #31393c !important;
+}
+
+.card {
+    background-color: #937666;
+    text-align: center;
+    justify-content: center;
+}
+
+h1 {
+    text-transform: uppercase;
+}
