@@ -18,11 +18,11 @@ class UserController extends Controller
         if (request()->exists('departamento')) {
             $departamento = request()->departamento;
             if (is_numeric($departamento)) {
-                $usuarios = User::where('departamento_id', '=', request()->departamento)->get();
+                $usuarios = User::where('departamento_id', '=', request()->departamento)->orderBy('name','asc')->get();
             }else {
                 $usuarios = User::whereHas('departamento', function ($query) use ($departamento) {
                     $query->where('nombre', '=', $departamento);
-                })->get();
+                })->orderBy('name','asc')->get();
             }
         }else {
             $usuarios = User::all();
