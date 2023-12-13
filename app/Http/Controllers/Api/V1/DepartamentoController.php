@@ -15,7 +15,14 @@ class DepartamentoController extends Controller
      */
     public function index()
     {
+
+    if (request()->has('page')) {
+        // Obtiene las aulas paginadas
+        $perPage = 6; // Número de elementos por página (ajusta según tus necesidades)
+        $departamentos = Departamento::paginate($perPage);
+    } else {
         $departamentos = Departamento::all();
+    }
 
     // Devuelve una respuesta JSON con los registros de departamento y un mensaje de éxito.
         return DepartamentoResource::collection($departamentos);

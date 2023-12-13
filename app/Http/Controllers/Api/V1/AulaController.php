@@ -26,7 +26,11 @@ class AulaController extends Controller
             
             return $aulas;
 
-        }else {
+        }if (request()->has('page')) {
+            // Obtiene las aulas paginadas
+            $perPage = 6; // Número de elementos por página (ajusta según tus necesidades)
+            $aulas = Aula::paginate($perPage);
+        } else {
             $aulas = Aula::all();
         }
         return AulaResource::collection($aulas);
