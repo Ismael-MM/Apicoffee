@@ -432,3 +432,39 @@ function guardarDatosModulos() {
         });
     });
 }
+
+/* ENVIO DE DATOS AL BACK-END PARA LOS UPDATE */
+
+async function enviarDatosFormulario() {
+
+}
+
+async function cogerDatosModuloParaEnviar() {
+    const modulos = document.querySelectorAll(".pricing-column-wrapper");
+
+    modulos.forEach(modulo => {
+        let btn = modulo.querySelector(".btn-modulo");
+
+        btn.addEventListener("click", () => {
+            let materia = modulo.querySelector(".select-modulo");
+            let codigo = modulo.querySelector(".pricing_row_title");
+            let horas_sem = modulo.querySelector(".horas_sem");
+            let distribucion = modulo.querySelector(".select-distribucion");
+            let turno = modulo.querySelector(".turno_docente");
+            let curso = modulo.querySelector(".curso_docente");
+            let aula = modulo.querySelector(".aula-modulo");
+
+            const datosModulo = {
+                materia: materia.options[materia.selectedIndex].textContent,
+                codigo: codigo.textContent,
+                horas_sem: horas_sem.value,
+                distribucion: distribucion.options[distribucion.selectedIndex].textContent,
+                turno: turno.value,
+                curso: curso.value,
+                aula: aula.options[aula.selectedIndex].textContent
+            }
+
+            
+        });
+    });
+}

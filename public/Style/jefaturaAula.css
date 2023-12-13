@@ -1,0 +1,29 @@
+body {
+    background-color: #31393c !important;
+}
+
+.aula {
+    background-color: #937666 !important;
+}
+
+.btn-more {
+    border-radius: 0px;
+    border-color: #2da7dc !important;
+    background: transparent;
+    text-transform: uppercase;
+    color: #2da7dc !important;
+}
+
+.btn-more:hover {
+    background-color: #2da7dc;
+    color: rgb(255, 255, 255) !important;
+}
+
+.btn-siguiente {
+    font-size: 50px !important;
+    font-weight: 600 !important;
+}
+
+.btn-atras {
+
+}
