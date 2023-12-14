@@ -22,15 +22,14 @@ class AulaController extends Controller
             if (is_numeric($aulaId)) {
                 $aula = Aula::find($aulaId);
             }else {
-                $aula = Aula::whereHas('nombre', function ($query) use ($aulaId) {
-                    $query->where('nombre', '=', $aulaId);
-                })->get();
+                $aula = Aula::where('nombre', $aulaId)->first();
             }
 
             $aulas = $aula->modulos()->join('cursos', 'modulos.curso_id', '=', 'cursos.id')
             ->where('cursos.turno',$turno)
             ->with('user')->get();  
             
+
             return $aulas;
 
         }if (request()->has('page')) {
