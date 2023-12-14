@@ -17,7 +17,10 @@ async function datos() {
 
 async function cogerDatosDocentesDepartamento() {
     const pathParts = window.location.pathname.split('/');
+    console.log(pathParts);
     const nombreDepartamento = pathParts[pathParts.length - 1];
+
+    console.log(nombreDepartamento);
 
     try {
         const response = await fetch(`/api/v1/usuarios?departamento=${nombreDepartamento}`, {

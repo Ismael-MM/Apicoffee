@@ -110,6 +110,8 @@ function crearCardAulas() {
             rowActual++;
         }
     });
+
+    seleccionarAula();
 }
 
 async function rellenarPagina(currentPage) {
@@ -129,7 +131,6 @@ function irAPaginaPrimera() {
 }
 
 function cargarPagina(page) {
-    console.log(`Ir a la pagina ${page}`);
     currentPage = page;
     rellenarPagina(currentPage);
 }
@@ -137,10 +138,6 @@ function cargarPagina(page) {
 function crearBotonesPaginacion() {
     let btn_anterior = document.querySelector(".btn-anterior");
     let btn_siguiente = document.querySelector(".btn-siguiente");
-
-    console.log(links);
-
-    console.log(currentPage);
 
     function onBtnClick() {
         cargarPagina(currentPage + (this === btn_anterior ? -1 : 1));
@@ -162,4 +159,64 @@ function crearBotonesPaginacion() {
     } else {
         btn_siguiente.disabled = true;
     }
+}
+
+let aulasMañana;
+let aulasTarde;
+
+function rellenarInformacionAula() {
+    let modal_informacion = document.getElementById('modalAula');
+}
+
+function seleccionarAula() {
+    // Obtener el elemento que se ha pulsado
+    const aulas = document.querySelectorAll(".card-body");
+
+    console.log(aulas);
+
+    aulas.forEach(async (aula) => {
+        let btn_aula = aula.querySelector(".btn-more");
+        let nombre_aula = aula.querySelector(".card-title");
+
+        btn_aula.addEventListener("click", async () => {
+            cogerInformacionAulaMañana(nombre_aula.textContent);
+            //cogerInformacionAulaTarde(nombre_aula);
+        })
+
+    })
+}
+
+async function cogerInformacionAulaMañana(nombreAula) {
+    const turno = "manana";
+    console.log(nombreAula);
+
+    try {
+        const response = await fetch(`/api/v1/aulas?aulaId=${nombreAula}&turno=${turno}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${tokenDocente}`
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error en la solicitud: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log(data.data);
+
+        aulasMañana = data.data;
+
+        console.log(aulasMañana);
+
+        //aulas.sort((a, b) => parseInt(a.nombre) - parseInt(b.nombre));
+
+    } catch (error) {
+        console.error('Error:', error.message);
+    }
+}
+
+async function cogerInformacionAulaTarde(nombreAula) {
+
 }
