@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->unsignedBigInteger('departamento_id');
             $table->unsignedBigInteger('especialidad_id');
-            $table->string('observaciones');
-            $table->unsignedTinyInteger('horas_total');
+            $table->string('observaciones')->default(null);
+            $table->unsignedTinyInteger('horas_total')->default(null);
             $table->string('rol');
         });
     }

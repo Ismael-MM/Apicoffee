@@ -11,9 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('aulas', function (Blueprint $table) {
-            $table->unsignedTinyInteger('horas_m')->default(null);
-            $table->unsignedTinyInteger('horas_t')->default(null);
+        Schema::table('modulos', function (Blueprint $table) {
+            $table->string('distribucion')->default(null);
         });
     }
 
@@ -22,9 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('aulas', function (Blueprint $table) {
-            $table->dropColumn('horas_m');
-            $table->dropColumn('horas_t');
+        Schema::table('modulos', function (Blueprint $table) {
+            $table->dropColumn('distribucion');
         });
     }
 };
