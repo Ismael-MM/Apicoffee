@@ -70,7 +70,7 @@ body {
     border-radius: 20px;
 }
 .form-horizontal .input-icon{
-    color: #b5b5b5;
+    color: black;
     font-size: 15px;
     text-align: center;
     line-height: 38px;
@@ -80,7 +80,7 @@ body {
     display: inline-block;
 }
 .form-horizontal .form-control{
-    color: #b5b5b5;
+    color: black;
     background-color: transparent;
     font-size: 14px;
     letter-spacing: 1px;
@@ -98,7 +98,7 @@ body {
     border: none;
 }
 .form-horizontal .form-control::placeholder{
-    color: #b5b5b5;
+    color: black;
     font-size: 13px;
     text-transform: capitalize;
 }
