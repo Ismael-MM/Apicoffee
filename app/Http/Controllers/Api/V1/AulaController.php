@@ -58,6 +58,7 @@ class AulaController extends Controller
      */
     public function update(AulaForm $request, Aula $aula)
     {
+        
         $aula->update([
             'nombre' => $request->nombre,
             'horas_m' => $request->horas_m,

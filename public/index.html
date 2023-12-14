@@ -4,35 +4,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="Style/style.css">
-    
     <title>Proyecto | 1º Trimestre</title>
 </head>
 
 <body>
-
-    <div class="container">
-        <div class="backbox">
-            <div class="loginMsg">
-                <div class="textcontent">
-                    <p class="title">CIFP Majada Marcial</p>
-                    <p>Establece tu horario</p>
+    <div class="form-bg">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-offset-3 col-lg-6 col-md-offset-2 col-md-8">
+                    <div class="form-container">
+                        <div class="form-icon">
+                            <i class="fa fa-user-circle"></i>
+                            <span class="signup">
+                                <h3>CIFP Majada Marcial</h3>
+                            </span>
+                        </div>
+                        <form class="form-horizontal">
+                            <h3 class="title">LOG IN</h3>
+                            <div class="form-group">
+                                <span class="input-icon"><i class="fa fa-envelope"></i></span>
+                                <input class="form-control" type="text" id="username" name="email" placeholder="Email">
+                            </div>
+                            <div class="form-group">
+                                <span class="input-icon"><i class="fa fa-lock"></i></span>
+                                <input class="form-control" type="password" id="password" name="password"
+                                    placeholder="Contraseña">
+                            </div>
+                            <button type="submit" class="btn signin">LOG IN</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-
-        <div class="frontbox">
-            <div class="login">
-                <h2>LOG IN</h2>
-                <form class="inputbox" id="loginForm">
-                    <input type="text" id="username" name="email" placeholder="Email">
-                    <input type="password" id="password" name="password" placeholder="Contraseña">
-                    <button type="submit" class="login-btn">LOG IN</button>
-                </form>
-            </div>
-        </div>
     </div>
-
     <script src="JavaScript/index.js"></script>
 </body>
 
