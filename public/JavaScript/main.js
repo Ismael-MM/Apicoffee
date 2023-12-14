@@ -7,8 +7,16 @@ let modulosDocente;
 ampliarModulos.addEventListener("click", añadirModulo);
 añadirObservacion.addEventListener("click", añadirObservacionDocente);
 
-cogerDatosModulos();
-datosDocente();
+mostrarModulos();
+
+async function mostrarModulos() {
+    try {
+        await datosDocente();
+    } catch (error) {
+        console.error('Error al obtener datos del docente:', error);
+    }
+}
+
 //guardarDatosModulos();
 
 async function datosDocente() {
@@ -58,6 +66,8 @@ async function datosDocente() {
             }
 
             localStorage.setItem("Docente", JSON.stringify(Docente));
+
+            cogerDatosModulos();
         })
         .catch(error => {
             console.error('Error en la solicitud:', error);
@@ -195,7 +205,10 @@ function añadirModulo() {
 async function cogerDatosModulos() {
     console.log(tokenDocente);
 
-    fetch('/api/v1/modulos', {
+    console.log(docenteSesion);
+    console.log(docenteSesion.especialidad_id);
+
+    fetch(`/api/v1/modulos?especialidad=${docenteSesion.especialidad_id}`, {
         method: 'GET',
         headers: {
             'Accept': 'application/json',
@@ -482,15 +495,52 @@ async function getDataModulo(modulo) {
     }
 }
 
-cogerDatosModuloParaEnviar();
+cogerDatosParaEnviar();
 
-async function cogerDatosModuloParaEnviar() {
+async function cogerDatosParaEnviar() {
     const modulos = document.querySelectorAll(".pricing-column-wrapper");
 
     let btn_modulos = document.querySelector(".btn-guardarTodo");
 
     btn_modulos.addEventListener("click", async () => {
+        modulos.forEach(async (modulo) => {
+            try {
+                let select = modulo.querySelector(".select-modulo");
 
+                const datosHTMLUser = {
+                    user_id: docenteSesion.id,
+                    update: 1
+                }
+
+                let moduloSeleccionado = await seleccionarModulo(select);
+
+                console.log(moduloSeleccionado);
+
+                const formData = new URLSearchParams();
+
+                for (const key in datosHTMLUser) {
+                    formData.append(key, encodeURIComponent(datosHTMLUser[key]));
+                }
+
+                try {
+                    await fetch(`/api/v1/modulos/${moduloSeleccionado.id}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                            'Authorization': `Bearer ${tokenDocente}`
+                        },
+                        body: formData,
+                    });
+
+                    console.log('Datos actualizados exitosamente');
+                } catch (error) {
+                    console.error('Error en la solicitud:', error.message);
+                }
+
+            } catch (error) {
+                console.error('Error:', error.message);
+            }
+        })
     });
 
     modulos.forEach(modulo => {

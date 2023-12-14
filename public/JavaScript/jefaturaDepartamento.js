@@ -3,10 +3,6 @@ let departamentos;
 let links;
 
 irAPaginaPrimera();
-document.addEventListener("DOMContentLoaded", () => {
-    informacionDepartamento();
-})
-
 
 async function cogerDepartamentos(page) {
     try {
@@ -72,11 +68,14 @@ function crearCardDepartamentos() {
 
         cont++;
 
-        if(cont == 3) {
+        if (cont == 3) {
             cont = 0;
             rowActual++;
         }
     });
+
+    informacionDepartamento();
+
 }
 
 async function rellenarPagina(currentPage) {
@@ -140,11 +139,11 @@ function informacionDepartamento() {
         let nombre = departamento.querySelector(".card-title");
         let btn_departamento = departamento.querySelector(".btn-more");
 
-        console.log(nombre);
+        console.log(nombre.textContent);
         console.log(btn_departamento);
 
         btn_departamento.addEventListener("click", () => {
-            window.location.href = `/jefatura/departamentos/${nombre}`;
+            window.location.href = `/jefatura/departamentos/${nombre.textContent}`;
         })
     })
 }
