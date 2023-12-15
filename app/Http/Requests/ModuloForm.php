@@ -27,7 +27,7 @@ class ModuloForm extends FormRequest
             'h_semanales' => 'required|integer',
             'h_totales' => 'required|integer',
             'especialidad_id' => 'required|integer',
-            'curso_id' => 'required|integer'
+            'curso_id' => 'required|integer',
         ];
     }
 }
