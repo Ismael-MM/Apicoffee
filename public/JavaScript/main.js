@@ -697,8 +697,24 @@ async function rellenarModulosEstablecidos() {
 function rellenarFormularioModuloEstablecidos(modulos, modulosUsuario) {
     for (let i = 0; i < modulos.length; i++) {
         let codigo = modulos[i].querySelector(".pricing_row_title");
+        let turno = modulos[i].querySelector(".turno_docente");
+        let modulo = modulos[i].querySelector(".select-modulo");
+        let curso = modulos[i].querySelector(".curso_docente");
+        let hsem = modulos[i].querySelector(".horas_sem");
+        let distri = modulos[i].querySelector(".select-distribucion");
+        let aula = modulos[i].querySelector(".aula-modulo");
 
         codigo.textContent = modulosUsuario[i].codigo;
+        turno.value = modulosUsuario[i].curso.turno;
+        curso.value = modulosUsuario[i].curso.nombre;
+        hsem.value = modulosUsuario[i].h_semanales;
+        distri.textContent = modulosUsuario[i].distribucion;
+        modulo.textContent = modulosUsuario[i].materia;
+
+        modulosUsuario[i].aulas.forEach(aulaNombre => {
+            aula.value = aulaNombre.nombre;
+        })
+        
     }
 }
 
