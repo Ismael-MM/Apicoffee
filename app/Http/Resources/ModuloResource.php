@@ -26,6 +26,7 @@ class ModuloResource extends JsonResource
         'especialidad' => new EspecialidadResource($this->especialidad),
         'curso' => new CursoResource($this->curso),
         'aulas' => $this->aulas()->get(),
+        'distribucion' => $this->distribucion,
         // 'created_at' => $this->created_at,
         // 'updated_at' => $this->updated_at,
         ];
