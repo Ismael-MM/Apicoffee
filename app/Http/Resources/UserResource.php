@@ -23,6 +23,7 @@ class UserResource extends JsonResource
             'observaciones' => $this->observaciones,
             'especialidad' => new EspecialidadResource($this->especialidad),
             'departamento' => new DepartamentoResource($this->departamento),
+            'estado' => $this->estado,
             // 'created_at' => $this->created_at,
             // 'updated_at' => $this->updated_at,
             ];
