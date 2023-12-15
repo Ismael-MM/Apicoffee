@@ -21,23 +21,32 @@ class AulaController extends Controller
 
             if (is_numeric($aulaId)) {
                 $aula = Aula::find($aulaId);
-            }else {
+            } else {
                 $aula = Aula::where('nombre', $aulaId)->first();
             }
 
-            $aulas = $aula->modulos()->join('cursos', 'modulos.curso_id', '=', 'cursos.id')
-            ->where('cursos.turno',$turno)
-            ->with('user')->get();  
-            
+            $aulas = $aula->modulos()
+                ->join('aulas_modulos as am1', 'modulos.id', '=', 'am1.modulo_id')
+                ->join('aulas', 'am1.aula_id', '=', 'aulas.id')
+                ->join('cursos', 'modulos.curso_id', '=', 'cursos.id')
+                ->where('cursos.turno', $turno)
+                ->with(['user', 'aulas'])
+                ->get();
 
             return $aulas;
-
-        }if (request()->has('page')) {
+        }
+        if (request()->has('page')) {
             // Obtiene las aulas paginadas
             $perPage = 6; // Número de elementos por página (ajusta según tus necesidades)
-            $aulas = Aula::orderByRaw("SUBSTRING(nombre, 1, 1) ASC")->orderBy('nombre', 'ASC')->paginate($perPage);
+            $aulas = Aula::orderByRaw("CASE WHEN nombre REGEXP '^[A-Za-z]' THEN 1 ELSE 2 END")
+            ->orderByRaw("SUBSTRING(nombre, 1, 1) ASC")
+            ->orderByRaw("CAST(SUBSTRING(nombre, 2) AS UNSIGNED) ASC")
+            ->paginate($perPage);
         } else {
-            $aulas = Aula::orderByRaw("SUBSTRING(nombre, 1, 1) ASC")->orderBy('nombre', 'ASC')->get();
+            $aulas = Aula::orderByRaw("CASE WHEN nombre REGEXP '^[A-Za-z]' THEN 1 ELSE 2 END")
+                ->orderByRaw("SUBSTRING(nombre, 1, 1) ASC")
+                ->orderByRaw("CAST(SUBSTRING(nombre, 2) AS UNSIGNED) ASC")
+                ->get();
         }
         return AulaResource::collection($aulas);
     }
@@ -64,7 +73,7 @@ class AulaController extends Controller
      */
     public function update(AulaForm $request, Aula $aula)
     {
-        
+
         $aula->update([
             'nombre' => $request->nombre,
             'horas_m' => $request->horas_m,
