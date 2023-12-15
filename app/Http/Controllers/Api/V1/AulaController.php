@@ -35,9 +35,9 @@ class AulaController extends Controller
         }if (request()->has('page')) {
             // Obtiene las aulas paginadas
             $perPage = 6; // Número de elementos por página (ajusta según tus necesidades)
-            $aulas = Aula::orderByRaw("CAST(SUBSTRING(nombre FROM 2) AS SIGNED)")->orderBy('nombre')->paginate($perPage);
+            $aulas = Aula::orderByRaw("SUBSTRING(nombre, 1, 1) ASC")->orderBy('nombre', 'ASC')->paginate($perPage);
         } else {
-            $aulas = Aula::orderByRaw("CAST(SUBSTRING(nombre FROM 2) AS SIGNED)")->orderBy('nombre')->get();
+            $aulas = Aula::orderByRaw("SUBSTRING(nombre, 1, 1) ASC")->orderBy('nombre', 'ASC')->get();
         }
         return AulaResource::collection($aulas);
     }
