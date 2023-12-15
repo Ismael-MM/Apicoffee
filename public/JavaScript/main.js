@@ -287,7 +287,7 @@ function rellenarModulosFormulario(moduloForm, datosModulos) {
             if (datos.user_id == 0) {
                 option.disabled = true;
             }
-            
+
             select.appendChild(option);
         });
     }
@@ -662,10 +662,10 @@ async function rellenarModulosEstablecidos() {
 
                 let modulos = document.querySelectorAll(".pricing-column-wrapper");
                 let numModulos = modulosUsuario.length;
-            
+
                 console.log(numModulos);
-            
-                if(numModulos > 2) {
+
+                if (numModulos > 2) {
                     do {
                         console.log(modulos);
 
@@ -679,7 +679,7 @@ async function rellenarModulosEstablecidos() {
                 }
 
                 console.log(modulosUsuario);
-            
+
                 rellenarFormularioModuloEstablecidos(modulos, modulosUsuario);
             })
             .catch(error => {
@@ -708,13 +708,29 @@ function rellenarFormularioModuloEstablecidos(modulos, modulosUsuario) {
         turno.value = modulosUsuario[i].curso.turno;
         curso.value = modulosUsuario[i].curso.nombre;
         hsem.value = modulosUsuario[i].h_semanales;
-        distri.textContent = modulosUsuario[i].distribucion;
-        modulo.textContent = modulosUsuario[i].materia;
+
+        let moduloOption = modulo.querySelectorAll("option");
+        let distriOption = distri.querySelectorAll("option");
+
+        moduloOption.forEach(option => {
+            console.log(option);
+            if (option.textContent == modulosUsuario[i].materia) {
+                option.setAttribute("default", true);
+            }
+        })
+
+        distriOption.forEach(option => {
+            console.log(option);
+            if (option.textContent == modulosUsuario[i].materia) {
+                option.setAttribute("default", true);
+            }
+        })
+
 
         modulosUsuario[i].aulas.forEach(aulaNombre => {
             aula.value = aulaNombre.nombre;
         })
-        
+
     }
 }
 
