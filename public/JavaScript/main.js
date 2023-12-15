@@ -67,7 +67,9 @@ async function datosDocente() {
 
             cogerDatosModulos();
 
-            comprobarBotonesPermisos()
+            console.log("DATOS DOCENTE" + modulosDocente)
+
+
         })
         .catch(error => {
             console.error('Error en la solicitud:', error);
@@ -225,6 +227,10 @@ async function cogerDatosModulos() {
             modulosDocente = data.data;
 
             rellenarFormulario(modulosDocente);
+
+            comprobarBotonesPermisos();
+
+            rellenarModulosEstablecidos();
         })
         .catch(error => {
             console.error('Error en la solicitud:', error);
@@ -278,12 +284,10 @@ function rellenarModulosFormulario(moduloForm, datosModulos) {
             option.value = datos.id;
             option.textContent = datos.materia;
 
-            /*
             if (datos.user_id != null) {
                 option.disabled = true;
             }
-            */
-
+            
             select.appendChild(option);
         });
     }
@@ -318,7 +322,6 @@ function actualizarDatos(datosHTML) {
             })
 
             datosHTML.aula.value = aulasModulo;
-
 
             let horas_totales = document.querySelector(".horas_totales");
 
@@ -655,36 +658,52 @@ async function rellenarModulosEstablecidos() {
                 return response.json();
             })
             .then(data => {
-                modulosUsuario = data;
+                modulosUsuario = data.data;
+
+                let modulos = document.querySelectorAll(".pricing-column-wrapper");
+                let numModulos = modulosUsuario.length;
+            
+                console.log(numModulos);
+            
+                if(numModulos > 2) {
+                    do {
+                        console.log(modulos);
+
+                        dibujarNewModulo(modulos, modulos.length);
+                        rellenarFormularioModuloEstablecidos(modulos, modulosUsuario);
+
+                        modulos = document.querySelectorAll(".pricing-column-wrapper");
+
+                        console.log(modulos.length, numModulos)
+                    } while (modulos.length != numModulos);
+                }
+
+                console.log(modulosUsuario);
+            
+                rellenarFormularioModuloEstablecidos(modulos, modulosUsuario);
             })
             .catch(error => {
                 console.error('Error en la solicitud:', error);
 
                 if (error.response) {
-                    // La respuesta de la API está presente, manejar según sea necesario
                     console.error('Respuesta de la API:', error.response);
                 }
             });
     } catch (error) {
         console.error('Error en la solicitud:', error.message);
     }
-
-    const modulos = document.querySelectorAll(".pricing-column-wrapper");
-    let numModulos = modulos.length;
-
-    dibujarNewModulo(modulos, numModulos);
-
-    rellenarFormularioModuloEstablecidos(modulos, modulosUsuario);
 }
 
 function rellenarFormularioModuloEstablecidos(modulos, modulosUsuario) {
     for (let i = 0; i < modulos.length; i++) {
         let codigo = modulos[i].querySelector(".pricing_row_title");
+
         codigo.textContent = modulosUsuario[i].codigo;
     }
 }
 
 function dibujarNewModulo(modulos, numModulos) {
+    console.log(modulos);
     let ultModulo = modulos[numModulos - 1];
 
     let numModulo = numModulos + 1;
@@ -750,6 +769,9 @@ function dibujarNewModulo(modulos, numModulos) {
 
     moduloDiv.innerHTML = moduloHTML;
 
+    console.log(ultModulo);
+    console.log(moduloDiv);
+
     ultModulo.insertAdjacentElement('afterend', moduloDiv);
 
     console.log(modulosDocente);
@@ -761,10 +783,7 @@ function comprobarBotonesPermisos() {
     const cont_btn = document.querySelector(".cont-btn");
 
     cont_btn.innerHTML = '';
-    /*
-    <button class="btn btn-primary ml-4 mr-4" type="button">Ver Horario</button>
-    <button class="btn btn-secondary" type="button">Ver Departamento</button>
-    */
+
     let btnHorario = document.createElement("button");
     btnHorario.textContent = "Ver Horario";
     btnHorario.classList.add("ml-4", "mr-4", "btn");

@@ -228,6 +228,21 @@ function rellenarInformacionAula(aulaMañana, aulaTarde, nombreAula) {
 
     let horas_mañana = document.querySelector(".horas_aula_mañana");
     let horas_tarde = document.querySelector(".horas_aula_tarde");
+    
+    aulaMañana.forEach(aula => {
+        aula.aulas.forEach(horas => {
+            horas_mañana.textContent = horas.horas_m;
+        })
+    })
+
+    aulaTarde.forEach(aula => {
+        aula.aulas.forEach(horas => {
+            horas_tarde.textContent = horas.horas_t;
+        })
+    })
+
+    console.log(horas_mañana.textContent)
+    console.log(horas_tarde.textContent)
 
     console.log(aulaMañana);
     console.log(aulaTarde);
@@ -326,6 +341,19 @@ async function cogerInformacionAulaTarde(nombreAula) {
 
 function comprobarBotonesPermisos() {
     const cont_btn = document.querySelector(".cont-btn");
+
+    let btn_anterior = document.querySelector(".btn-anterior");
+    let btn_siguiente = document.querySelector(".btn-siguiente");
+
+    function onBtnClick() {
+        cargarPagina(currentPage + (this === btn_anterior ? -1 : 1));
+
+        btn_anterior.removeEventListener("click", onBtnClick);
+        btn_siguiente.removeEventListener("click", onBtnClick);
+    }
+
+    btn_anterior.removeEventListener("click", onBtnClick);
+    btn_siguiente.removeEventListener("click", onBtnClick);
 
     cont_btn.innerHTML = '';
     /*
