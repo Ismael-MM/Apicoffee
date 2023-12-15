@@ -284,7 +284,7 @@ function rellenarModulosFormulario(moduloForm, datosModulos) {
             option.value = datos.id;
             option.textContent = datos.materia;
 
-            if (datos.user_id != null) {
+            if (datos.user_id == 0) {
                 option.disabled = true;
             }
             
