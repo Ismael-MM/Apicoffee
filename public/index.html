@@ -12,6 +12,9 @@
 
 <body>
     <div class="form-bg">
+        <div id="flash-message" class="alert alert-danger alert-dismissible fade align-items-center text-center" role="alert" style="display: none;">
+            ¡Datos incorrectos, vuelve a intentarlo!
+        </div>
         <div class="container">
             <div class="row">
                 <div class="col-lg-offset-3 col-lg-6 col-md-offset-2 col-md-8">
@@ -30,7 +33,8 @@
                             </div>
                             <div class="form-group">
                                 <span class="input-icon"><i class="fa fa-lock"></i></span>
-                                <input class="form-control" type="password" id="password" name="password" placeholder="Contraseña">
+                                <input class="form-control" type="password" id="password" name="password"
+                                    placeholder="Contraseña">
                             </div>
                             <button type="submit" class="btn signin login-btn">LOG IN</button>
                         </form>

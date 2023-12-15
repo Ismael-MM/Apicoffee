@@ -1,6 +1,6 @@
 const ampliarModulos = document.querySelector(".btn-modulo");
 const añadirObservacion = document.querySelector(".btn-observacion");
-const tokenDocente = localStorage.getItem("token");
+const tokenDocente = sessionStorage.getItem("token");
 let docenteSesion;
 let modulosDocente;
 
@@ -16,8 +16,6 @@ async function mostrarModulos() {
         console.error('Error al obtener datos del docente:', error);
     }
 }
-
-//guardarDatosModulos();
 
 async function datosDocente() {
     let nombre_docente = document.querySelector(".nombre_docente");
@@ -68,6 +66,8 @@ async function datosDocente() {
             localStorage.setItem("Docente", JSON.stringify(Docente));
 
             cogerDatosModulos();
+
+            comprobarBotonesPermisos()
         })
         .catch(error => {
             console.error('Error en la solicitud:', error);
@@ -278,6 +278,12 @@ function rellenarModulosFormulario(moduloForm, datosModulos) {
             option.value = datos.id;
             option.textContent = datos.materia;
 
+            /*
+            if (datos.user_id != null) {
+                option.disabled = true;
+            }
+            */
+
             select.appendChild(option);
         });
     }
@@ -318,6 +324,18 @@ function actualizarDatos(datosHTML) {
 
             horas_totales.textContent = sumarHorasTotales();
 
+            let icon = document.querySelector(".icon");
+
+            if (horas_totales.textContent >= 17 && horas_totales.textContent <= 20) {
+                if (horas_totales.textContent == 17 || horas_totales.textContent == 20) {
+                    icon.innerHTML = '<i class="exclamation bi bi-exclamation-circle-fill"></i>'
+                } else {
+                    icon.innerHTML = '<i class="check bi bi-check-circle-fill"></i>'
+                }
+            } else {
+                icon.innerHTML = '<i class="bad bi bi-x-circle-fill"></i>'
+            }
+
             while (datosHTML.distribucion.options.length > 1) {
                 datosHTML.distribucion.remove(1);
             }
@@ -337,6 +355,10 @@ function actualizarDatos(datosHTML) {
         .catch(error => {
             console.error('Error en la solicitud:', error);
         });
+
+}
+
+async function actualizarDatosDocente() {
 
 }
 
@@ -612,5 +634,177 @@ async function seleccionarModulo(select) {
         return moduloData;
     } catch (error) {
         console.error('Error:', error.message);
+    }
+}
+
+async function rellenarModulosEstablecidos() {
+    let modulosUsuario;
+
+    try {
+        fetch(`/api/v1/modulos?usuario=${docenteSesion.id}`, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Authorization': `Bearer ${tokenDocente}`
+            },
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                modulosUsuario = data;
+            })
+            .catch(error => {
+                console.error('Error en la solicitud:', error);
+
+                if (error.response) {
+                    // La respuesta de la API está presente, manejar según sea necesario
+                    console.error('Respuesta de la API:', error.response);
+                }
+            });
+    } catch (error) {
+        console.error('Error en la solicitud:', error.message);
+    }
+
+    const modulos = document.querySelectorAll(".pricing-column-wrapper");
+    let numModulos = modulos.length;
+
+    dibujarNewModulo(modulos, numModulos);
+
+    rellenarFormularioModuloEstablecidos(modulos, modulosUsuario);
+}
+
+function rellenarFormularioModuloEstablecidos(modulos, modulosUsuario) {
+    for (let i = 0; i < modulos.length; i++) {
+        let codigo = modulos[i].querySelector(".pricing_row_title");
+        codigo.textContent = modulosUsuario[i].codigo;
+    }
+}
+
+function dibujarNewModulo(modulos, numModulos) {
+    let ultModulo = modulos[numModulos - 1];
+
+    let numModulo = numModulos + 1;
+
+    const moduloDiv = document.createElement("div");
+
+    moduloDiv.classList.add("col-sm-3");
+    moduloDiv.classList.add("col-md-2");
+    moduloDiv.classList.add("pricing-column-wrapper");
+
+    const moduloHTML =
+        `
+    <div class="pricing-column">
+        <div class="pricing-price-row">
+            <div class="pricing-price-wrapper">
+                <div class="pricing-price">
+                    <div class="pricing-cost">${numModulo}º</div>
+                    <div class="time">Modulo</div>
+                </div>
+            </div>
+        </div>
+        <div class="pricing-row-title">
+            <div class="pricing_row_title">___</div>
+        </div>
+        <form action="" class="form">
+            <div class="form-group">
+                <input type="text" disabled class="form-control pricing-row turno_docente" placeholder="Elige el turno M/T">
+            </div>
+                    
+            <div class="form-group">
+                <input type="text" disabled class="form-control pricing-row curso_docente" placeholder="Elige el Curso y el Ciclo">
+            </div>
+                    
+            <div class="form-group">
+                <select class="form-control pricing-row select-modulo">
+                    <option value="">Seleccione un Modulo</option>
+                </select>
+            </div>
+                    
+            <div class="form-group">
+                <input type="number" disabled class="form-control pricing-row horas_sem" placeholder="Horas Semanales">
+            </div>
+                    
+            <div class="form-group">
+                <select class="form-control pricing-row select-distribucion">
+                    <option value="">Seleccione la distribucion</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <input type="text" disabled class="form-control pricing-row aula-modulo"
+                placeholder="Elige el Aula">
+            </div>
+                    
+            <div class="pricing-footer">
+                <div class="gem-button-container gem-button-position-center">
+                    <button type="button" class="gem-button gem-green btn-modulo">Guardar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    `;
+
+    moduloDiv.innerHTML = moduloHTML;
+
+    ultModulo.insertAdjacentElement('afterend', moduloDiv);
+
+    console.log(modulosDocente);
+
+    rellenarFormulario(modulosDocente);
+}
+
+function comprobarBotonesPermisos() {
+    const cont_btn = document.querySelector(".cont-btn");
+
+    cont_btn.innerHTML = '';
+    /*
+    <button class="btn btn-primary ml-4 mr-4" type="button">Ver Horario</button>
+    <button class="btn btn-secondary" type="button">Ver Departamento</button>
+    */
+    let btnHorario = document.createElement("button");
+    btnHorario.textContent = "Ver Horario";
+    btnHorario.classList.add("ml-4", "mr-4", "btn");
+    btnHorario.style.backgroundColor = "#2da7dc";
+    btnHorario.type = 'button';
+    btnHorario.addEventListener("click", () => window.location.href = "/docente");
+
+    let btnJefatura = document.createElement("button");
+    btnJefatura.textContent = "Ver Jefatura";
+    btnJefatura.classList.add("ml-4", "mr-4", "btn");
+    btnJefatura.style.backgroundColor = "#2da7dc";
+    btnJefatura.type = 'button';
+    btnJefatura.addEventListener("click", () => window.location.href = "/jefatura");
+
+    let btnDepartamento = document.createElement("button");
+    btnDepartamento.textContent = "Ver Departamento";
+    btnDepartamento.classList.add("ml-4", "mr-4", "btn");
+    btnDepartamento.style.backgroundColor = "#2da7dc";
+    btnDepartamento.type = 'button';
+    btnDepartamento.addEventListener("click", () => window.location.href = "/jefeDepartamento");
+
+    let btnDashboard = document.createElement("button");
+    btnDashboard.textContent = "Ver Dashboard";
+    btnDashboard.classList.add("ml-4", "mr-4", "btn");
+    btnDashboard.style.backgroundColor = "#2da7dc";
+    btnDashboard.type = 'button';
+    btnDashboard.addEventListener("click", () => window.location.href = "/dashboard");
+
+    let url = window.location.pathname.split('/');
+
+    cont_btn.appendChild(btnHorario);
+
+    if (url[url.length - 1] == "docente") {
+        if (docenteSesion.rol == "jefatura") {
+            cont_btn.appendChild(btnJefatura);
+            cont_btn.appendChild(btnDashboard);
+        } else if (docenteSesion.rol == "jefedepartamento") {
+            cont_btn.appendChild(btnDepartamento);
+        }
+    } else if (url[url.length - 1] == "aulas" || url[url.length - 1] == "departamentos") {
+        cont_btn.appendChild(btnJefatura);
     }
 }

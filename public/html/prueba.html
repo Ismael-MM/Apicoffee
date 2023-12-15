@@ -1,62 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        /* Agregar estilos CSS personalizados para los bordes */
-        .border-top {
-            border-top: 1px solid #dee2e6;
-        }
-
-        .border-bottom {
-            border-bottom: 1px solid #dee2e6;
-        }
-
-        .border-right {
-            border-right: 1px solid #dee2e6;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        th,
-        td {
-            border: 1px solid #dddddd;
-            text-align: left;
-            padding: 8px;
-        }
-
-        th {
-            background-color: #f2f2f2;
-        }
-    </style>
-    <title>Modal con Bootstrap</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <title>Tu Página</title>
+  <style>
+    /* Ajustes adicionales si es necesario */
+  </style>
 </head>
-
 <body>
 
-    <!-- Botón para abrir el modal -->
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#miModal">
-        Abrir Modal
-    </button>
+<!-- Contenido principal -->
+<div class="container mt-5">
+  <!-- Botón de prueba para mostrar el mensaje -->
+  <button type="button" class="btn btn-primary" onclick="mostrarMensajeFlash()">Mostrar Mensaje Flash</button>
 
-    <!-- Modal -->
-    
+  <!-- Mostrar el mensaje flash con Bootstrap -->
+  <div id="flash-message" class="alert alert-success alert-dismissible fade" role="alert" style="display: none;">
+    ¡Operación completada con éxito!
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+</div>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
+<script>
+  function mostrarMensajeFlash() {
+    // Mostrar el mensaje flash
+    var flashMessage = document.getElementById('flash-message');
+    flashMessage.style.display = 'block';
 
+    // Agregar la clase 'show' para activar la animación de entrada de Bootstrap
+    flashMessage.classList.add('show');
 
-    <!-- Scripts de Bootstrap y jQuery necesarios -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    // Ocultar el mensaje después de 5 segundos
+    setTimeout(function() {
+      // Quitar la clase 'show' para activar la animación de salida de Bootstrap
+      flashMessage.classList.remove('show');
 
+      // Ocultar el mensaje después de completar la animación de salida
+      setTimeout(function() {
+        flashMessage.style.display = 'none';
+      }, 1500); // Duración de la animación de salida de Bootstrap (1.5 segundos)
+    }, 5000); // Tiempo antes de comenzar la animación de salida (5 segundos)
+  }
+</script>
 </body>
-
 </html>

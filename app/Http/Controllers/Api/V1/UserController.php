@@ -54,6 +54,20 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         //
+        if (Request()->update != null) {
+            $user->update([
+                'distribucion' => $request->distribucion,
+                'observaciones' => $request->observaciones,
+                'horas_total' => $request->horas_total
+            ]);
+        }else {
+            $user->update([
+                //completar
+            ]);
+        }
+
+        // Devuelve una respuesta JSON con el registro de módulo actualizado y un mensaje de éxito.
+        return new UserResource ($user);
     }
 
     /**

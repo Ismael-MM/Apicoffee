@@ -28,3 +28,33 @@ body {
     font-size: 50px !important;
     font-weight: 600 !important;
 }
+
+/* Estilo de la barra de desplazamiento */
+::-webkit-scrollbar {
+    width: 12px;
+    /* Ancho de la barra de desplazamiento */
+}
+
+/* Estilo del pulgar (thumb) de la barra de desplazamiento */
+::-webkit-scrollbar-thumb {
+    background-color: #937666;
+    /* Color del pulgar */
+    border-radius: 6px;
+    /* Bordes redondeados del pulgar */
+}
+
+/* Estilo del fondo de la barra de desplazamiento */
+::-webkit-scrollbar-track {
+    background-color: #31393c;
+    /* Color del fondo de la barra de desplazamiento */
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}

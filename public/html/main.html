@@ -15,52 +15,66 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../Style/main.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
     <title>Proyecto | 1º Trimestre</title>
 </head>
 
 <body>
-    <header>
-
-    </header>
+    <nav class="navbar navbar-expand-lg navbar-light m-2" style="background-color: #937666;">
+        <!-- Botones a la izquierda -->
+        <div class="container-fluid">
+            <div class="col-md-9 col-sm-9 cont-btn">
+            </div>
+            <div class="col-md-3 col-sm-3">
+                <button class="btn btn-danger float-right mr-4 btn-logOut" type="button">Log Out</button>
+            </div>
+        </div>
+    </nav>
 
     <div id="mainCoantiner">
         <div class="margin-body">
             <div class="row mb-4">
-                <div class="col-sm-1 col-md-1 mt-2 d-flex align-items-center justify-content-center">
+                <div class="col-sm-2 col-md-2 mt-2 d-flex align-items-center justify-content-center">
                     <button type="button"
                         class="btn-modulo btn btn-light rounded btn-50x50 d-flex align-items-center justify-content-center">
                         <h1 class="d-flex align-items-center justify-content-center">+</h1>
                     </button>
                 </div>
-                <div class="col-sm-10 col-md-10 mt-4">
+                <div class="col-sm-8 col-md-8 mt-4">
                     <div class="wpb_text_column wpb_content_element ">
                         <div class="wpb_wrapper">
                             <h1 class="text-white text-center"><span><span class="light">Tabla Profesores</span></h2>
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-1 col-md-1 mt-4 d-flex align-items-center justify-content-center">
+                <div class="col-sm-2 col-md-2 mt-4 d-flex align-items-center justify-content-center">
+                    <h5 class="icon mr-3"></h5>
                     <h1 class="horas_totales text-white d-flex align-items-center justify-content-center">0</h1>
+                    <h3 class="text-white ml-3 mr-4">HORAS</h3>
                 </div>
             </div>
 
             <div class="row mt-2 mb-2 mt-3">
                 <div class="col-sm-3 col-md-3 d-flex align-items-center justify-content-center">
                     <h5 class="horas_totales text-white d-flex align-items-center justify-content-center">
-                        Nombre: <h5 class="nombre_docente pl-2 text-white"></h5></h5>
+                        Nombre: <h5 class="nombre_docente pl-2 text-white"></h5>
+                    </h5>
                 </div>
                 <div class="col-sm-3 col-md-3 d-flex align-items-center justify-content-center">
                     <h5 class="horas_totales text-white d-flex align-items-center justify-content-center">
-                        Departamento: <h5 class="departamento_docente pl-2 text-white"></h5></h5>
+                        Departamento: <h5 class="departamento_docente pl-2 text-white"></h5>
+                    </h5>
                 </div>
                 <div class="col-sm-3 col-md-3 d-flex align-items-center justify-content-center">
                     <h5 class="horas_totales text-white d-flex align-items-center justify-content-center">
-                        Curso: <h5 class="curso_docente pl-2 text-white"></h5></h5>
+                        Curso: <h5 class="curso_docente pl-2 text-white"></h5>
+                    </h5>
                 </div>
                 <div class="col-sm-3 col-md-3 d-flex align-items-center justify-content-center">
                     <h5 class="horas_totales text-white d-flex align-items-center justify-content-center">
-                        Especialidad: <h5 class="especialidad_docente pl-2 text-white"></h5></h5>
+                        Especialidad: <h5 class="especialidad_docente pl-2 text-white"></h5>
+                    </h5>
                 </div>
             </div>
 
@@ -80,7 +94,8 @@
                         </div>
                         <form action="" class="form">
                             <div class="form-group">
-                                <input type="text" disabled class="form-control pricing-row turno_docente" placeholder="Elige el turno M/T">
+                                <input type="text" disabled class="form-control pricing-row turno_docente"
+                                    placeholder="Elige el turno M/T">
                             </div>
 
                             <div class="form-group">
@@ -133,7 +148,8 @@
                         </div>
                         <form action="" class="form">
                             <div class="form-group">
-                                <input type="text" disabled class="form-control pricing-row turno_docente" placeholder="Elige el turno M/T">
+                                <input type="text" disabled class="form-control pricing-row turno_docente"
+                                    placeholder="Elige el turno M/T">
                             </div>
 
                             <div class="form-group">
@@ -172,14 +188,15 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="row">
                 <div class="col-sm-4 col-md-4">
 
                 </div>
                 <div class="col-sm-4 col-md-4 d-flex align-items-center justify-content-center">
                     <button type="button"
-                        class="mb-5 btn-guardarTodo btn btn-primary rounded d-flex align-items-center justify-content-center">
+                        class="mb-5 text-white btn-guardarTodo btn rounded d-flex align-items-center justify-content-center"
+                        style="background-color: #2da7dc;">
                         <h4 class="m-0 d-flex align-items-center justify-content-center">Guardar todo</h4>
                     </button>
                 </div>
@@ -191,7 +208,8 @@
                 </div>
             </div>
 
-            <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+            <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
+                aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -206,7 +224,8 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                            <button type="button" class="btn btn-primary" onclick="guardarObservacion()">Guardar</button>
+                            <button type="button" class="btn btn-primary"
+                                onclick="guardarObservacion()">Guardar</button>
                         </div>
                     </div>
                 </div>
@@ -214,7 +233,12 @@
         </div>
     </div>
 
+    <footer class="m-2 text-center py-3 mt-auto" style="background-color: #937666;">
+        <p>&copy; 2023 Tu Sitio Web</p>
+    </footer>
+
     <script src="../JavaScript/main.js"></script>
+    <script src="../JavaScript/funcionesComunes.js"></script>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>

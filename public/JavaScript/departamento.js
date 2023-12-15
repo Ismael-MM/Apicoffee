@@ -1,4 +1,4 @@
-const tokenDocente = localStorage.getItem("token");
+const tokenDocente = sessionStorage.getItem("token");
 let datosDocentesDepartamento = [];
 
 datos();
@@ -13,6 +13,8 @@ async function datos() {
     datosDocentesDepartamento.forEach(docente => {
         cogerDatosModulosDocentes(docente);
     })
+
+    comprobarBotonesPermisos();
 }
 
 async function cogerDatosDocentesDepartamento() {
@@ -93,6 +95,7 @@ function crearUser(docente, docentesModulos, horasDocentes) {
     let nombreUser = document.createElement("td");
     let modulosUser = document.createElement("td");
     let distribucionHorasUser = document.createElement("td");
+    let valido = document.createElement("td");
 
     let horasText = document.createElement("h5");
     horasText.classList.add("text-center", "text-white")
@@ -106,6 +109,7 @@ function crearUser(docente, docentesModulos, horasDocentes) {
     nombreUser.classList.add("col-sm-3", "col-md-3", "text-center");
     modulosUser.classList.add("col-sm-7", "col-md-7", "text-center", "justify-content-center");
     distribucionHorasUser.classList.add("col-sm-2", "col-md-2", "text-center");
+    valido.classList.add("col-sm-1", "col-md-1", "text-center");
 
     docentesModulos.forEach(modulo => {
         let span = document.createElement("span");
@@ -114,11 +118,74 @@ function crearUser(docente, docentesModulos, horasDocentes) {
         modulosUser.appendChild(span);
     });
 
+    if (horasText.textContent >= 17 && horasText.textContent <= 20) {
+        if (horasText.textContent == 17 || horasText.textContent == 20) {
+            valido.innerHTML = '<i class="exclamation bi bi-exclamation-circle-fill"></i>'
+        } else {
+            valido.innerHTML = '<i class="check bi bi-check-circle-fill"></i>'
+        }
+    } else {
+        valido.innerHTML = '<i class="bad bi bi-x-circle-fill"></i>'
+    }
+
     nombreUser.appendChild(userText);
     user.appendChild(nombreUser);
     user.appendChild(modulosUser);
     distribucionHorasUser.appendChild(horasText);
     user.appendChild(distribucionHorasUser);
+    user.appendChild(valido);
 
     document.querySelector("tbody").appendChild(user);
+}
+
+function comprobarBotonesPermisos() {
+    const cont_btn = document.querySelector(".cont-btn");
+
+    cont_btn.innerHTML = '';
+    /*
+    <button class="btn btn-primary ml-4 mr-4" type="button">Ver Horario</button>
+    <button class="btn btn-secondary" type="button">Ver Departamento</button>
+    */
+    let btnHorario = document.createElement("button");
+    btnHorario.textContent = "Ver Horario";
+    btnHorario.classList.add("ml-4", "mr-4", "btn");
+    btnHorario.style.backgroundColor = "#2da7dc";
+    btnHorario.type = 'button';
+    btnHorario.addEventListener("click", () => window.location.href = "/docente");
+
+    let btnJefatura = document.createElement("button");
+    btnJefatura.textContent = "Ver Jefatura";
+    btnJefatura.classList.add("ml-4", "mr-4", "btn");
+    btnJefatura.style.backgroundColor = "#2da7dc";
+    btnJefatura.type = 'button';
+    btnJefatura.addEventListener("click", () => window.location.href = "/jefatura");
+
+    let btnDepartamento = document.createElement("button");
+    btnDepartamento.textContent = "Ver Departamento";
+    btnDepartamento.classList.add("ml-4", "mr-4", "btn");
+    btnDepartamento.style.backgroundColor = "#2da7dc";
+    btnDepartamento.type = 'button';
+    btnDepartamento.addEventListener("click", () => window.location.href = "/jefeDepartamento");
+
+    let btnDashboard = document.createElement("button");
+    btnDashboard.textContent = "Ver Dashboard";
+    btnDashboard.classList.add("ml-4", "mr-4", "btn");
+    btnDashboard.style.backgroundColor = "#2da7dc";
+    btnDashboard.type = 'button';
+    btnDashboard.addEventListener("click", () => window.location.href = "/dashboard");
+
+    let url = window.location.pathname.split('/');
+
+    cont_btn.appendChild(btnHorario);
+
+    if (url[url.length - 1] == "docente") {
+        if (docenteSesion.rol == "jefatura") {
+            cont_btn.appendChild(btnJefatura);
+            cont_btn.appendChild(btnDashboard);
+        } else if (docenteSesion.rol == "jefedepartamento") {
+            cont_btn.appendChild(btnDepartamento);
+        }
+    } else if (url[url.length - 1] == "aulas" || url[url.length - 1] == "departamentos") {
+        cont_btn.appendChild(btnJefatura);
+    }
 }

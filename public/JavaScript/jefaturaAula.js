@@ -1,4 +1,4 @@
-const tokenDocente = localStorage.getItem("token");
+const tokenDocente = sessionStorage.getItem("token");
 let aulas;
 let links;
 let meta;
@@ -56,6 +56,8 @@ async function cogerAulas(page) {
         console.log(data.data);
         links = data.links;
 
+        console.log(links);
+
         aulas = data.data;
 
         console.log(aulas);
@@ -64,6 +66,27 @@ async function cogerAulas(page) {
 
     } catch (error) {
         console.error('Error:', error.message);
+    }
+}
+
+function crearBarradeBotones() {
+    const barraBotones = document.querySelector(".barraBotones");
+
+    barraBotones.innerHTML = '';
+
+    let urlString = links.last;
+    let urlParams = new URLSearchParams(new URL(urlString).search);
+
+    const pageValue = urlParams.get("page");
+
+    for(let i = 0; i < pageValue; i++) {
+        let btn = document.createElement("button");
+        btn.textContent = i+1;
+        btn.classList.add("btn", "btn-primary", "mx-2");
+        btn.type = 'button';
+        btn.addEventListener("click", () => cargarPagina(i+1))
+
+        barraBotones.appendChild(btn);
     }
 }
 
@@ -119,7 +142,9 @@ async function rellenarPagina(currentPage) {
         await cogerAulas(currentPage);  // Esperar a que cogerAulas termine
 
         crearCardAulas();    // Llamar a crearCardAulas después de cogerAulas
-        crearBotonesPaginacion();  // Crear botones de paginación
+        crearBotonesPaginacion();
+        crearBarradeBotones(); 
+        comprobarBotonesPermisos();
     } catch (error) {
         console.error("Error al rellenar la página:", error);
     }
@@ -161,14 +186,58 @@ function crearBotonesPaginacion() {
     }
 }
 
-let aulasMañana;
-let aulasTarde;
+let aulaMañana;
+let aulaTarde;
 
-function rellenarInformacionAula() {
-    let modal_informacion = document.getElementById('modalAula');
+function rellenarInformacionAula(aulaMañana, aulaTarde, nombreAula) {
+    let nombre_aula = document.querySelector(".nombre_aula");
+    nombre_aula.textContent = nombreAula;
+    let modal_informacion = new bootstrap.Modal(document.getElementById('modalAula'));
+
+    let tables = document.querySelectorAll(".table-body");
+
+    tables[0].innerHTML = '';
+
+    aulaMañana.forEach(modulo => {
+        let newModulo = document.createElement("tr");
+        let nombre_modulo = document.createElement("td");
+        let docente_modulo = document.createElement("td");
+
+        nombre_modulo.textContent = modulo.codigo;
+        docente_modulo.textContent = modulo.user.name;
+
+        newModulo.appendChild(nombre_modulo);
+        newModulo.appendChild(docente_modulo);
+        tables[0].appendChild(newModulo);
+    })
+
+    tables[1].innerHTML = '';
+
+    aulaTarde.forEach(modulo => {
+        let newModulo = document.createElement("tr");
+        let nombre_modulo = document.createElement("td");
+        let docente_modulo = document.createElement("td");
+
+        nombre_modulo.textContent = modulo.codigo;
+        docente_modulo.textContent = modulo.user.name;
+
+        newModulo.appendChild(nombre_modulo);
+        newModulo.appendChild(docente_modulo);
+        tables[1].appendChild(newModulo);
+    })
+
+    let horas_mañana = document.querySelector(".horas_aula_mañana");
+    let horas_tarde = document.querySelector(".horas_aula_tarde");
+
+    console.log(aulaMañana);
+    console.log(aulaTarde);
+
+    modal_informacion.show();
+
+    console.log("TERMINADO");
 }
 
-function seleccionarAula() {
+async function seleccionarAula() {
     // Obtener el elemento que se ha pulsado
     const aulas = document.querySelectorAll(".card-body");
 
@@ -179,16 +248,25 @@ function seleccionarAula() {
         let nombre_aula = aula.querySelector(".card-title");
 
         btn_aula.addEventListener("click", async () => {
-            cogerInformacionAulaMañana(nombre_aula.textContent);
-            //cogerInformacionAulaTarde(nombre_aula);
-        })
 
+            console.log("entra");
+
+            try {
+                rellenarInformacionAula(
+                    await cogerInformacionAulaMañana(nombre_aula.textContent),
+                    await cogerInformacionAulaTarde(nombre_aula.textContent),
+                    nombre_aula.textContent
+                )
+            } catch (error) {
+                console.error("Error al rellenar la información del aula:", error);
+            }
+        })
     })
 }
 
 async function cogerInformacionAulaMañana(nombreAula) {
+    console.log("COGIENDO AULA MAÑANA")
     const turno = "manana";
-    console.log(nombreAula);
 
     try {
         const response = await fetch(`/api/v1/aulas?aulaId=${nombreAula}&turno=${turno}`, {
@@ -204,13 +282,12 @@ async function cogerInformacionAulaMañana(nombreAula) {
         }
 
         const data = await response.json();
-        console.log(data.data);
 
-        aulasMañana = data.data;
+        aulaMañana = data;
 
-        console.log(aulasMañana);
+        console.log(aulaMañana);
 
-        //aulas.sort((a, b) => parseInt(a.nombre) - parseInt(b.nombre));
+        return aulaMañana;
 
     } catch (error) {
         console.error('Error:', error.message);
@@ -218,5 +295,83 @@ async function cogerInformacionAulaMañana(nombreAula) {
 }
 
 async function cogerInformacionAulaTarde(nombreAula) {
+    console.log("COGIENDO AULA TARDE")
+    const turno = "tarde";
 
+    try {
+        const response = await fetch(`/api/v1/aulas?aulaId=${nombreAula}&turno=${turno}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${tokenDocente}`
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error en la solicitud: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        aulaTarde = data;
+
+        console.log(aulaTarde);
+
+        return aulaTarde;
+
+    } catch (error) {
+        console.error('Error:', error.message);
+    }
+}
+
+function comprobarBotonesPermisos() {
+    const cont_btn = document.querySelector(".cont-btn");
+
+    cont_btn.innerHTML = '';
+    /*
+    <button class="btn btn-primary ml-4 mr-4" type="button">Ver Horario</button>
+    <button class="btn btn-secondary" type="button">Ver Departamento</button>
+    */
+    let btnHorario = document.createElement("button");
+    btnHorario.textContent = "Ver Horario";
+    btnHorario.classList.add("ml-4", "mr-4", "btn");
+    btnHorario.style.backgroundColor = "#2da7dc";
+    btnHorario.type = 'button';
+    btnHorario.addEventListener("click", () => window.location.href = "/docente");
+
+    let btnJefatura = document.createElement("button");
+    btnJefatura.textContent = "Ver Jefatura";
+    btnJefatura.classList.add("ml-4", "mr-4", "btn");
+    btnJefatura.style.backgroundColor = "#2da7dc";
+    btnJefatura.type = 'button';
+    btnJefatura.addEventListener("click", () => window.location.href = "/jefatura");
+
+    let btnDepartamento = document.createElement("button");
+    btnDepartamento.textContent = "Ver Departamento";
+    btnDepartamento.classList.add("ml-4", "mr-4", "btn");
+    btnDepartamento.style.backgroundColor = "#2da7dc";
+    btnDepartamento.type = 'button';
+    btnDepartamento.addEventListener("click", () => window.location.href = "/jefeDepartamento");
+
+    let btnDashboard = document.createElement("button");
+    btnDashboard.textContent = "Ver Dashboard";
+    btnDashboard.classList.add("ml-4", "mr-4", "btn");
+    btnDashboard.style.backgroundColor = "#2da7dc";
+    btnDashboard.type = 'button';
+    btnDashboard.addEventListener("click", () => window.location.href = "/dashboard");
+
+    let url = window.location.pathname.split('/');
+
+    cont_btn.appendChild(btnHorario);
+
+    if (url[url.length - 1] == "docente") {
+        if (jefeDepartamento.rol == "jefatura") {
+            cont_btn.appendChild(btnJefatura);
+            cont_btn.appendChild(btnDashboard);
+        } else if (jefeDepartamento.rol == "jefedepartamento") {
+            cont_btn.appendChild(btnDepartamento);
+        }
+    } else if (url[url.length - 1] == "aulas" || url[url.length - 1] == "departamentos") {
+        cont_btn.appendChild(btnJefatura);
+    }
 }
