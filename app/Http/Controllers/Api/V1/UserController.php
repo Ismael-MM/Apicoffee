@@ -58,11 +58,12 @@ class UserController extends Controller
             $user->update([
                 'distribucion' => $request->distribucion,
                 'observaciones' => $request->observaciones,
-                'horas_total' => $request->horas_total
+                'horas_total' => $request->horas_total,
             ]);
         }else {
             $user->update([
-                //completar
+                'name' => $request->name,
+                'email' => $request->email,
             ]);
         }
 
