@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('modulos', function (Blueprint $table) {
             $table->id();
-            $table->string('codigo')->unique();
+            $table->string('codigo');
             $table->string('materia');
             $table->integer('h_semanales');
             $table->integer('h_totales');
