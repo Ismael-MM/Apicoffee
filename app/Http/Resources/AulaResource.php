@@ -17,6 +17,8 @@ class AulaResource extends JsonResource
         return [
             'id' => $this->id,
             'nombre' => $this->nombre,
+            'horas_m' => $this->horas_m,
+            'horas_t' => $this->horas_t,
             // 'created_at' => $this->created_at,
             // 'updated_at' => $this->updated_at,
             ];
