@@ -14,16 +14,14 @@ class CursosSeeder extends Seeder
     public function run(): void
     {
         DB::table('cursos')->insert([
-            'nombre' => '1º educacion infantil',
-            'turno' => 'tarde',
-        ]);
-        DB::table('cursos')->insert([
-            'nombre' => '2º peluqeria y estetica',
-            'turno' => 'mañana',
-        ]);
-        DB::table('cursos')->insert([
-            'nombre' => '1º DAW',
-            'turno' => 'mañana',
+            ['nombre' => '1º Educación Infantil', 'turno' => 'tarde'],
+            ['nombre' => '2º Peluquería y Estética', 'turno' => 'tarde'],
+            ['nombre' => '1º Peluquería y Estética', 'turno' => 'tarde'],
+            ['nombre' => '1º Sistemas Microinformáticos', 'turno' => 'manana'],
+            ['nombre' => '2º Sistemas Microinformáticos', 'turno' => 'manana'],
+            ['nombre' => '1º Desarrollo de Aplicaciones Web', 'turno' => 'tarde'],
+            ['nombre' => '2º Desarrollo de Aplicaciones Web', 'turno' => 'manana'],
+            // Agrega más cursos según sea necesario
         ]);
     }
 }

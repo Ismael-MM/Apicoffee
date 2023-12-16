@@ -14,10 +14,12 @@ class EspecialidadsSeeder extends Seeder
     public function run(): void
     {
         DB::table('especialidads')->insert([
-            'nombre' => 'aplicaciones webs',
-        ]);
-        DB::table('especialidads')->insert([
-            'nombre' => 'electicidad',
+            ['nombre' => 'SISTEMAS Y APLICACIONES INFORMÁTICAS'],
+            ['nombre' => 'INFORMÁTICA'],
+            ['nombre' => 'Especialidad de relleno1'],
+            ['nombre' => 'Especialidad de relleno2'],
+            ['nombre' => 'Especialidad de relleno3'],
+            // Agrega más especialidades según sea necesario
         ]);
     }
 }
