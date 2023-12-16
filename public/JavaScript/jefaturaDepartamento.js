@@ -30,6 +30,11 @@ async function cogerDepartamentos(page) {
 
 function crearBarradeBotones() {
     const barraBotones = document.querySelector(".barraBotones");
+    let btn_anterior = document.querySelector(".btn-anterior");
+    let btn_siguiente = document.querySelector(".btn-siguiente");
+
+    btn_anterior.removeEventListener("click", onBtnClick);
+    btn_siguiente.removeEventListener("click", onBtnClick);
 
     barraBotones.innerHTML = '';
 
@@ -104,8 +109,8 @@ async function rellenarPagina(currentPage) {
         await cogerDepartamentos(currentPage);  // Esperar a que cogerAulas termine
 
         crearCardDepartamentos();    // Llamar a crearCardAulas después de cogerAulas
-        crearBotonesPaginacion();
         crearBarradeBotones();
+        crearBotonesPaginacion();
         comprobarBotonesPermisos();  // Crear botones de paginación
     } catch (error) {
         console.error("Error al rellenar la página:", error);
@@ -123,20 +128,20 @@ function cargarPagina(page) {
     rellenarPagina(currentPage);
 }
 
+function onBtnClick() {
+    let btn_anterior = document.querySelector(".btn-anterior");
+    let btn_siguiente = document.querySelector(".btn-siguiente");
+
+    cargarPagina(currentPage + (this === btn_anterior ? -1 : 1));
+
+    btn_anterior.removeEventListener("click", onBtnClick);
+    btn_siguiente.removeEventListener("click", onBtnClick);
+}
+
 function crearBotonesPaginacion() {
     let btn_anterior = document.querySelector(".btn-anterior");
     let btn_siguiente = document.querySelector(".btn-siguiente");
 
-    console.log(links);
-
-    console.log(currentPage);
-
-    function onBtnClick() {
-        cargarPagina(currentPage + (this === btn_anterior ? -1 : 1));
-
-        btn_anterior.removeEventListener("click", onBtnClick);
-        btn_siguiente.removeEventListener("click", onBtnClick);
-    }
 
     if (links.prev) {
         btn_anterior.disabled = false;

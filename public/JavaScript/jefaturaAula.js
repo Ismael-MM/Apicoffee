@@ -71,6 +71,11 @@ async function cogerAulas(page) {
 
 function crearBarradeBotones() {
     const barraBotones = document.querySelector(".barraBotones");
+    let btn_anterior = document.querySelector(".btn-anterior");
+    let btn_siguiente = document.querySelector(".btn-siguiente");
+
+    btn_anterior.removeEventListener("click", onBtnClick);
+    btn_siguiente.removeEventListener("click", onBtnClick);
 
     barraBotones.innerHTML = '';
 
@@ -141,9 +146,9 @@ async function rellenarPagina(currentPage) {
     try {
         await cogerAulas(currentPage);  // Esperar a que cogerAulas termine
 
-        crearCardAulas();    // Llamar a crearCardAulas después de cogerAulas
-        crearBotonesPaginacion();
-        crearBarradeBotones(); 
+        crearCardAulas(); // Llamar a crearCardAulas después de cogerAulas
+        crearBarradeBotones();
+        crearBotonesPaginacion(); 
         comprobarBotonesPermisos();
     } catch (error) {
         console.error("Error al rellenar la página:", error);
@@ -160,16 +165,20 @@ function cargarPagina(page) {
     rellenarPagina(currentPage);
 }
 
+function onBtnClick() {
+    let btn_anterior = document.querySelector(".btn-anterior");
+    let btn_siguiente = document.querySelector(".btn-siguiente");
+
+    cargarPagina(currentPage + (this === btn_anterior ? -1 : 1));
+
+    btn_anterior.removeEventListener("click", onBtnClick);
+    btn_siguiente.removeEventListener("click", onBtnClick);
+}
+
 function crearBotonesPaginacion() {
     let btn_anterior = document.querySelector(".btn-anterior");
     let btn_siguiente = document.querySelector(".btn-siguiente");
 
-    function onBtnClick() {
-        cargarPagina(currentPage + (this === btn_anterior ? -1 : 1));
-
-        btn_anterior.removeEventListener("click", onBtnClick);
-        btn_siguiente.removeEventListener("click", onBtnClick);
-    }
 
     if (links.prev) {
         btn_anterior.disabled = false;
