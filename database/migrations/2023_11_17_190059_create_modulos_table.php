@@ -17,9 +17,10 @@ return new class extends Migration
             $table->string('materia');
             $table->integer('h_semanales');
             $table->integer('h_totales');
-            $table->unsignedBigInteger('user_id')->nulleable()->default(null);
+            $table->unsignedBigInteger('user_id')->nulleable()->default(0);
             $table->unsignedBigInteger('especialidad_id');
             $table->unsignedBigInteger('curso_id');
+            $table->string('distribucion')->default(null);
             $table->timestamps();
         });
     }
