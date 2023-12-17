@@ -5,9 +5,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\ModuloController;
 use App\Http\Controllers\Auth\LoginRegisterController;
 use App\Http\Controllers\Api\V1\EspecialidadController;
-use App\Http\Controllers\Api\v1\CursoController;
-use App\Http\Controllers\Api\v1\DepartamentoController;
-use App\Http\Controllers\Api\v1\AulaController;
+use App\Http\Controllers\Api\V1\CursoController;
+use App\Http\Controllers\Api\V1\DepartamentoController;
+use App\Http\Controllers\Api\V1\AulaController;
 use App\Http\Controllers\Api\V1\UserController;
 
 /*
