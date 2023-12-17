@@ -26,7 +26,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::prefix('v1')->group(function () {
+    Route::prefix('V1')->group(function () {
         Route::apiResource('modulos', ModuloController::class)->missing(function (Request $request) {
             return response()->json(['error' => "esa ruta no existe"],404);
         });
