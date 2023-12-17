@@ -53,13 +53,15 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
-        if (Request()->update != null) {
-            if (Request()->update == "horas") {
+
+        $user = $request->user();
+
+        if ($request->has('update')) {
+            if ($request->update == 'horas') {
                 $user->update([
                     'horas_total' => $request->horas_total,
                 ]);
-            } else {
+            }else {
                 $user->update([
                     'observaciones' => $request->observaciones,
                 ]);
@@ -69,10 +71,14 @@ class UserController extends Controller
                 'name' => $request->name,
                 'email' => $request->email,
             ]);
+    
         }
+        
+
+
 
         // Devuelve una respuesta JSON con el registro de módulo actualizado y un mensaje de éxito.
-        return new UserResource($user);
+        return ($user);
     }
 
     /**

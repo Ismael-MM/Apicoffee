@@ -108,12 +108,12 @@ class ModuloController extends Controller
         // Valida los datos del formulario enviado por la aplicación cliente.
 
         // Actualiza el registro de módulo en la base de datos.
-        if (Request()->update != null) {
-            if (Request()->update == 'distribucion') {
+        if ($request->has('update')) {
+            if ($request->update == 'distribucion') {
                 $modulo->update([
                     'distribucion' => $request->distribucion,
                 ]);
-            }else {
+            }else{
                 $modulo->update([
                     'user_id' => $request->user_id,
                 ]);
@@ -131,7 +131,7 @@ class ModuloController extends Controller
         }
 
         // Devuelve una respuesta JSON con el registro de módulo actualizado y un mensaje de éxito.
-        return new ModuloResource($modulo);
+        return ($modulo);
     }
 
     /**
