@@ -109,9 +109,15 @@ class ModuloController extends Controller
 
         // Actualiza el registro de módulo en la base de datos.
         if (Request()->update != null) {
-            $modulo->update([
-                'user_id' => $request->user_id,
-            ]);
+            if (Request()->update == 'distribucion') {
+                $modulo->update([
+                    'distribucion' => $request->distribucion,
+                ]);
+            }else {
+                $modulo->update([
+                    'user_id' => $request->user_id,
+                ]);
+            }
         } else {
             $modulo->update([
                 'codigo' => $request->codigo,
