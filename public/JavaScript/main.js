@@ -220,6 +220,8 @@ function añadirModulo() {
 
         console.log(modulosDocente);
 
+        cogerDatosParaEnviar();
+
         rellenarFormulario(modulosDocente);
     }
 }
@@ -491,25 +493,22 @@ function guardarDatosModulos() {
 
 /* ENVIO DE DATOS AL BACK-END PARA LOS UPDATE */
 
-enviarDatosFormulario();
+const btn_guardarTodo = document.querySelector(".btn-guardarTodo");
+
+btn_guardarTodo.addEventListener("click", () => enviarDatosFormulario);
+
+cogerDatosParaEnviar();
 
 async function enviarDatosFormulario() {
-    const modulos = document.querySelectorAll(".pricing-column-wrapper");
-
-    const btn_guardarTodo = document.querySelector(".btn-guardarTodo");
-
-    btn_guardarTodo.addEventListener("click", () => {
-        /* RECORRER CADA MODULO Y OBTENER SUS DATOS */
-        modulos.forEach(modulo => {
-            getDataModulo(modulo);
-        })
-        getHorasTotales();
+    modulos.forEach(modulo => {
+        getDataModulo(modulo);
     })
+    getHorasTotales();
+
 }
 
 async function getDataModulo(modulo) {
     let select = modulo.querySelector(".select-modulo");
-    let distribucion = modulo.querySelector(".select-distribucion")
 
     const datosHTMLUser = {
         user_id: docenteSesion.id,
@@ -540,11 +539,13 @@ async function getDataModulo(modulo) {
     }
 }
 
-async function getDistribucion(moduloSeleccionado, modulo) { 
+async function getDistribucion(moduloSeleccionado, modulo) {
     let distribucion = modulo.querySelector(".select-distribucion");
 
+    console.log(distribucion.value);
+
     const datosHTMLUser = {
-        distribucion: distribucion.selectedIndex,
+        distribucion: distribucion.value,
         update: "distribucion"
     }
 
@@ -601,8 +602,6 @@ async function getHorasTotales() {
         console.error('Error en la solicitud:', error.message);
     }
 }
-
-cogerDatosParaEnviar();
 
 async function cogerDatosParaEnviar() {
     const modulos = document.querySelectorAll(".pricing-column-wrapper");
@@ -751,22 +750,24 @@ async function rellenarModulosEstablecidos() {
                 let numModulos = modulosUsuario.length;
 
                 console.log(numModulos);
-                if(numModulos != 0) {
+                if (numModulos != 0) {
                     if (numModulos > 2) {
                         do {
                             console.log(modulos);
-    
+
+
+
                             dibujarNewModulo(modulos, modulos.length);
-                            rellenarFormularioModuloEstablecidos(modulos, modulosUsuario);
-    
+                            //rellenarFormularioModuloEstablecidos(modulos, modulosUsuario);
+
                             modulos = document.querySelectorAll(".pricing-column-wrapper");
-    
+
                             console.log(modulos.length, numModulos)
                         } while (modulos.length != numModulos);
                     }
-    
+
                     console.log(modulosUsuario);
-    
+
                     rellenarFormularioModuloEstablecidos(modulos, modulosUsuario);
                 }
             })
@@ -792,15 +793,12 @@ function rellenarFormularioModuloEstablecidos(modulos, modulosUsuario) {
         let distri = modulos[i].querySelector(".select-distribucion");
         let aula = modulos[i].querySelector(".aula-modulo");
 
-        console.log(modulosUsuario[i]);
-
         codigo.textContent = modulosUsuario[i].codigo;
         turno.value = modulosUsuario[i].curso.turno;
         curso.value = modulosUsuario[i].curso.nombre;
         hsem.value = modulosUsuario[i].h_semanales;
 
         let moduloOption = modulo.querySelectorAll("option");
-        let distriOption = distri.querySelectorAll("option");
 
         moduloOption.forEach(option => {
             if (option.textContent == modulosUsuario[i].materia) {
@@ -821,8 +819,14 @@ function rellenarFormularioModuloEstablecidos(modulos, modulosUsuario) {
             distri.appendChild(option);
         });
 
+        let distriOption = distri.querySelectorAll("option");
+
+        console.log(modulosUsuario[i]);
+
         distriOption.forEach(option => {
-            if (option.textContent == modulosUsuario[i].distribucion) {
+            let decodedValue = decodeURIComponent(modulosUsuario[i].distribucion);
+
+            if (decodedValue === option.value) {
                 option.setAttribute("selected", true);
             }
         })
@@ -911,6 +915,8 @@ function dibujarNewModulo(modulos, numModulos) {
     ultModulo.insertAdjacentElement('afterend', moduloDiv);
 
     console.log(modulosDocente);
+
+    cogerDatosParaEnviar();
 
     rellenarFormulario(modulosDocente);
 }

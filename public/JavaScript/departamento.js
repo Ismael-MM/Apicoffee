@@ -19,7 +19,6 @@ async function datos() {
 
 async function cogerDatosDocentesDepartamento() {
     const pathParts = window.location.pathname.split('/');
-    console.log(pathParts);
     const nombreDepartamento = pathParts[pathParts.length - 1];
 
     console.log(nombreDepartamento);
@@ -42,6 +41,7 @@ async function cogerDatosDocentesDepartamento() {
         data.data.forEach(docenteDepartamento => {
             datosDocentesDepartamento.push(docenteDepartamento);
         });
+        console.log(datosDocentesDepartamento);
     } catch (error) {
         console.error('Error en la solicitud:', error);
     }
