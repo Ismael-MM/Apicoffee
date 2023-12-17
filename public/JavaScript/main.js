@@ -544,8 +544,8 @@ async function getDistribucion(moduloSeleccionado, modulo) {
     let distribucion = modulo.querySelector(".select-distribucion");
 
     const datosHTMLUser = {
-        distribucion: distribucion.value,
-        update: 1
+        distribucion: distribucion.selectedIndex,
+        update: "distribucion"
     }
 
     const formData = new URLSearchParams();
