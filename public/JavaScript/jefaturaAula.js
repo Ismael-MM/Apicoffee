@@ -213,10 +213,13 @@ function rellenarInformacionAula(aulaMañana, aulaTarde, nombreAula) {
         let docente_modulo = document.createElement("td");
 
         nombre_modulo.textContent = modulo.codigo;
-        docente_modulo.textContent = modulo.user.name;
-
         newModulo.appendChild(nombre_modulo);
-        newModulo.appendChild(docente_modulo);
+
+        if(modulo.user) {
+            docente_modulo.textContent = modulo.user.name;
+            newModulo.appendChild(docente_modulo);
+        }
+
         tables[0].appendChild(newModulo);
     })
 
@@ -228,10 +231,13 @@ function rellenarInformacionAula(aulaMañana, aulaTarde, nombreAula) {
         let docente_modulo = document.createElement("td");
 
         nombre_modulo.textContent = modulo.codigo;
-        docente_modulo.textContent = modulo.user.name;
-
         newModulo.appendChild(nombre_modulo);
-        newModulo.appendChild(docente_modulo);
+        
+        if(modulo.user) {
+            docente_modulo.textContent = modulo.user.name;
+            newModulo.appendChild(docente_modulo);
+        }
+
         tables[1].appendChild(newModulo);
     })
 
