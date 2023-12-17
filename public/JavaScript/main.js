@@ -112,14 +112,34 @@ function cerrarModal() {
     modal.style.display = "none";
 }
 
-function guardarObservacion() {
+async function guardarObservacion() {
     let observacion = document.getElementById("observacion").value;
 
-    let Docente = JSON.parse(localStorage.getItem("Docente"));
+    const datosHTMLUser = {
+        observaciones: observacion,
+        update: "observacion"
+    }
 
-    Docente.observaciones = observacion;
+    const formData = new URLSearchParams();
 
-    localStorage.setItem("Docente", JSON.stringify(Docente));
+    for (const key in datosHTMLUser) {
+        formData.append(key, encodeURIComponent(datosHTMLUser[key]));
+    }
+
+    try {
+        await fetch(`/api/v1/usuarios/${docenteSesion.id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': `Bearer ${tokenDocente}`
+            },
+            body: formData,
+        });
+
+        console.log('Datos actualizados exitosamente');
+    } catch (error) {
+        console.error('Error en la solicitud:', error.message);
+    }
 
     $('#modal').modal('hide');
 }
@@ -284,9 +304,11 @@ function rellenarModulosFormulario(moduloForm, datosModulos) {
             option.value = datos.id;
             option.textContent = datos.materia;
 
-            if (datos.user_id == 0) {
+            /*
+            if (datos.user_id != 0) {
                 option.disabled = true;
             }
+            */
 
             select.appendChild(option);
         });
@@ -358,10 +380,6 @@ function actualizarDatos(datosHTML) {
         .catch(error => {
             console.error('Error en la solicitud:', error);
         });
-
-}
-
-async function actualizarDatosDocente() {
 
 }
 
@@ -485,11 +503,13 @@ async function enviarDatosFormulario() {
         modulos.forEach(modulo => {
             getDataModulo(modulo);
         })
+        getHorasTotales();
     })
 }
 
 async function getDataModulo(modulo) {
     let select = modulo.querySelector(".select-modulo");
+    let distribucion = modulo.querySelector(".select-distribucion")
 
     const datosHTMLUser = {
         user_id: docenteSesion.id,
@@ -506,6 +526,68 @@ async function getDataModulo(modulo) {
 
     try {
         await fetch(`/api/v1/modulos/${moduloSeleccionado.id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': `Bearer ${tokenDocente}`
+            },
+            body: formData,
+        });
+
+        console.log('Datos actualizados exitosamente');
+    } catch (error) {
+        console.error('Error en la solicitud:', error.message);
+    }
+}
+
+async function getDistribucion(moduloSeleccionado, modulo) { 
+    let distribucion = modulo.querySelector(".select-distribucion");
+
+    const datosHTMLUser = {
+        distribucion: distribucion.value,
+        update: 1
+    }
+
+    const formData = new URLSearchParams();
+
+    for (const key in datosHTMLUser) {
+        formData.append(key, encodeURIComponent(datosHTMLUser[key]));
+    }
+
+    try {
+        await fetch(`/api/v1/modulos/${moduloSeleccionado.id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': `Bearer ${tokenDocente}`
+            },
+            body: formData,
+        });
+
+        console.log('Datos actualizados exitosamente');
+    } catch (error) {
+        console.error('Error en la solicitud:', error.message);
+    }
+}
+
+async function getHorasTotales() {
+    let horas_totales = document.querySelector(".horas_totales").textContent;
+
+    console.log(horas_totales);
+
+    const datosHTMLUser = {
+        horas_total: horas_totales,
+        update: "horas"
+    }
+
+    const formData = new URLSearchParams();
+
+    for (const key in datosHTMLUser) {
+        formData.append(key, encodeURIComponent(datosHTMLUser[key]));
+    }
+
+    try {
+        await fetch(`/api/v1/usuarios/${docenteSesion.id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
@@ -538,6 +620,9 @@ async function cogerDatosParaEnviar() {
                 }
 
                 let moduloSeleccionado = await seleccionarModulo(select);
+
+                getHorasTotales();
+                getDistribucion(moduloSeleccionado, modulo);
 
                 console.log(moduloSeleccionado);
 
@@ -581,6 +666,9 @@ async function cogerDatosParaEnviar() {
                 }
 
                 let moduloSeleccionado = await seleccionarModulo(select);
+
+                getHorasTotales();
+                getDistribucion(moduloSeleccionado, modulo)
 
                 console.log(moduloSeleccionado);
 
@@ -629,7 +717,6 @@ async function seleccionarModulo(select) {
         const data = await response.json();
         console.log(data);
 
-        // Utiliza find para encontrar el módulo deseado
         const moduloData = data.data;
 
         //console.log(moduloData);
@@ -664,23 +751,24 @@ async function rellenarModulosEstablecidos() {
                 let numModulos = modulosUsuario.length;
 
                 console.log(numModulos);
-
-                if (numModulos > 2) {
-                    do {
-                        console.log(modulos);
-
-                        dibujarNewModulo(modulos, modulos.length);
-                        rellenarFormularioModuloEstablecidos(modulos, modulosUsuario);
-
-                        modulos = document.querySelectorAll(".pricing-column-wrapper");
-
-                        console.log(modulos.length, numModulos)
-                    } while (modulos.length != numModulos);
+                if(numModulos != 0) {
+                    if (numModulos > 2) {
+                        do {
+                            console.log(modulos);
+    
+                            dibujarNewModulo(modulos, modulos.length);
+                            rellenarFormularioModuloEstablecidos(modulos, modulosUsuario);
+    
+                            modulos = document.querySelectorAll(".pricing-column-wrapper");
+    
+                            console.log(modulos.length, numModulos)
+                        } while (modulos.length != numModulos);
+                    }
+    
+                    console.log(modulosUsuario);
+    
+                    rellenarFormularioModuloEstablecidos(modulos, modulosUsuario);
                 }
-
-                console.log(modulosUsuario);
-
-                rellenarFormularioModuloEstablecidos(modulos, modulosUsuario);
             })
             .catch(error => {
                 console.error('Error en la solicitud:', error);
@@ -695,7 +783,7 @@ async function rellenarModulosEstablecidos() {
 }
 
 function rellenarFormularioModuloEstablecidos(modulos, modulosUsuario) {
-    for (let i = 0; i < modulos.length; i++) {
+    for (let i = 0; i < modulosUsuario.length; i++) {
         let codigo = modulos[i].querySelector(".pricing_row_title");
         let turno = modulos[i].querySelector(".turno_docente");
         let modulo = modulos[i].querySelector(".select-modulo");
@@ -703,6 +791,8 @@ function rellenarFormularioModuloEstablecidos(modulos, modulosUsuario) {
         let hsem = modulos[i].querySelector(".horas_sem");
         let distri = modulos[i].querySelector(".select-distribucion");
         let aula = modulos[i].querySelector(".aula-modulo");
+
+        console.log(modulosUsuario[i]);
 
         codigo.textContent = modulosUsuario[i].codigo;
         turno.value = modulosUsuario[i].curso.turno;
@@ -713,25 +803,39 @@ function rellenarFormularioModuloEstablecidos(modulos, modulosUsuario) {
         let distriOption = distri.querySelectorAll("option");
 
         moduloOption.forEach(option => {
-            console.log(option);
             if (option.textContent == modulosUsuario[i].materia) {
-                option.setAttribute("default", true);
+                option.setAttribute("selected", true);
             }
         })
+
+        while (distri.options.length > 1) {
+            distri.remove(1);
+        }
+
+        distribucionHoras(modulosUsuario[i].h_semanales).forEach(e => {
+            let option = document.createElement("option");
+
+            option.value = e;
+            option.textContent = e;
+
+            distri.appendChild(option);
+        });
 
         distriOption.forEach(option => {
-            console.log(option);
-            if (option.textContent == modulosUsuario[i].materia) {
-                option.setAttribute("default", true);
+            if (option.textContent == modulosUsuario[i].distribucion) {
+                option.setAttribute("selected", true);
             }
         })
-
 
         modulosUsuario[i].aulas.forEach(aulaNombre => {
             aula.value = aulaNombre.nombre;
         })
 
     }
+
+    let horas_totales = document.querySelector(".horas_totales");
+
+    horas_totales.textContent = sumarHorasTotales();
 }
 
 function dibujarNewModulo(modulos, numModulos) {

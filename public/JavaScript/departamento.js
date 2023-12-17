@@ -185,7 +185,7 @@ function comprobarBotonesPermisos() {
         } else if (docenteSesion.rol == "jefedepartamento") {
             cont_btn.appendChild(btnDepartamento);
         }
-    } else if (url[url.length - 1] == "aulas" || url[url.length - 1] == "departamentos") {
+    } else if (url[url.length - 1] == "aulas" || url[url.length - 1] == "departamentos" || url[url.length - 2] == "departamentos") {
         cont_btn.appendChild(btnJefatura);
     }
 }
