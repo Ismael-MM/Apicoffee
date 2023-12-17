@@ -56,7 +56,6 @@ class UserController extends Controller
         //
         if (Request()->update != null) {
             $user->update([
-                'distribucion' => $request->distribucion,
                 'observaciones' => $request->observaciones,
                 'horas_total' => $request->horas_total,
             ]);
